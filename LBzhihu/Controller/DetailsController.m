@@ -37,9 +37,10 @@
     [backBtn addTarget:self action:@selector(back) forControlEvents:(UIControlEventTouchUpInside)];
     [self.headView addSubview:backBtn];
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame))];
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame)- 20, MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame))];
     self.webView.scrollView.bounces = YES;
     self.webView.delegate = self;
+    
     
     [self.view addSubview:self.headView];
     [self.headView addSubview:self.webView];
@@ -58,6 +59,7 @@
 }
 
 #pragma mark - ******************** 拼接html语言
+
 - (void)showInWebViewWithDetailsModel:(DetailsModel *)model{
     NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<!DOCTYPE HTML><html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">"];
     [htmlString appendFormat:@"<title>%@</title></head>",model.title];
@@ -65,7 +67,17 @@
         [htmlString appendFormat:@"<link href=""%@",cssUrlString];
         [htmlString appendFormat:@" rel=""stylesheet"" type=""text/css"">"];
     }
+    
+    
+        [htmlString appendFormat:@"<style>.avatarT {width:100%;height:200px; position:absolute; min-width:320px;} .bgwz {position:absolute; color:#fff; margin:150px 15px 0 15px; min-width:290px; font-size:1em;}</style>"];
+
+    
     [htmlString appendFormat:@"<body>"];
+
+    if (model.image.length > 0) {
+        [htmlString appendFormat:@"<div><img class=""avatarT"" src=""%@""><p class=""bgwz"">绘画和摄影的区别在哪里？有绘画基础的人上手摄影会不会很快？</p></div>",model.image];
+    }
+    
     [htmlString appendFormat:@"%@",model.body];
     htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\n" withString:@"!@!n"] mutableCopy];
     htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\r" withString:@"!@!r"] mutableCopy];
@@ -76,12 +88,40 @@
     htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!n" withString:@"\n"] mutableCopy];
     htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!r" withString:@"\r"] mutableCopy];
     htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!p" withString:@"\p"] mutableCopy];
-
+    
     
     [htmlString appendFormat:@"</body></html>"];
     
     [self.webView loadHTMLString:htmlString baseURL:nil];
 }
+
+
+
+
+//- (void)showInWebViewWithDetailsModel:(DetailsModel *)model{
+//    NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<!DOCTYPE HTML><html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">"];
+//    [htmlString appendFormat:@"<title>%@</title></head>",model.title];
+//    for (NSString *cssUrlString in model.css) {
+//        [htmlString appendFormat:@"<link href=""%@",cssUrlString];
+//        [htmlString appendFormat:@" rel=""stylesheet"" type=""text/css"">"];
+//    }
+//    [htmlString appendFormat:@"<body>"];
+//    [htmlString appendFormat:@"%@",model.body];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\n" withString:@"!@!n"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\r" withString:@"!@!r"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\p" withString:@"!@!p"] mutableCopy];
+//    
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\\"  withString:@""] mutableCopy];
+//    
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!n" withString:@"\n"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!r" withString:@"\r"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!p" withString:@"\p"] mutableCopy];
+//
+//    
+//    [htmlString appendFormat:@"</body></html>"];
+//    
+//    [self.webView loadHTMLString:htmlString baseURL:nil];
+//}
 
 - (void)back{
     [self.navigationController popToRootViewControllerAnimated:YES];
