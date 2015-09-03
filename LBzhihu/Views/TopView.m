@@ -49,7 +49,6 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.numberOfLines = 0;
         [titleLabel sizeToFit];
-        NSLog(@"title:%@",itm.title);
         [imageView addSubview:titleLabel];
         [self addSubview:imageView];
     }

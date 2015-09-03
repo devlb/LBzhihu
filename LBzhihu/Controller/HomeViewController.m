@@ -19,6 +19,7 @@
 {
     NSMutableArray *storieArr;
     NSMutableArray *themeArr;
+    NSMutableArray *homeDataArr;
     UITapGestureRecognizer *tapHome;
 }
 
@@ -35,6 +36,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    homeDataArr = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
     [self addUI];
     
@@ -102,8 +104,8 @@
      __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getTodayStoriesWhensuccess:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
+         homeDataArr = storieArr.mutableCopy;
         NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
-
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.topView setStories:topStories];
             [weakSelf.tableView reloadData];
@@ -283,6 +285,8 @@
    // self.mainView.userInteractionEnabled = YES;
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
    [self.mainView removeGestureRecognizer:tapHome];
+    storieArr = homeDataArr;
+    [self.tableView reloadData];
 }
 
 - (void)loadTypeDataWithStorieId:(NSString *)storieId{
