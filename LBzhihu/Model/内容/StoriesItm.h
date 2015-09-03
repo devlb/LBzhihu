@@ -11,10 +11,10 @@
 @interface StoriesItm : JsonModel
 
 @property (nonatomic,strong) NSString *type;
-@property (nonatomic,strong) NSArray *images;
+@property (nonatomic,strong) NSArray *images;//!<Stories才有
 @property (nonatomic,strong) NSString *storiesId;
 @property (nonatomic,strong) NSString *ga_prefix;
 @property (nonatomic,strong) NSString *title;
 @property (nonatomic,strong) NSString *multipic;
-
+@property (nonatomic,strong) NSString *image;//!<topStories才有属性
 @end

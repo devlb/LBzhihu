@@ -13,5 +13,5 @@
 
 @property (nonatomic,strong) NSString *date;
 @property (nonatomic,strong) NSArray *stories;
-
+@property (nonatomic,strong) NSArray *top_stories;
 @end

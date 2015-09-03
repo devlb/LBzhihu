@@ -227,10 +227,10 @@
 		2B0336A01B97304F008A22A0 /* 内容 */ = {
 			isa = PBXGroup;
 			children = (
-				2B6ECB521B982EFE00E3DD29 /* ContentList.h */,
-				2B6ECB531B982EFE00E3DD29 /* ContentList.m */,
 				2B6ECB541B982EFE00E3DD29 /* DetailsModel.h */,
 				2B6ECB551B982EFE00E3DD29 /* DetailsModel.m */,
+				2B6ECB521B982EFE00E3DD29 /* ContentList.h */,
+				2B6ECB531B982EFE00E3DD29 /* ContentList.m */,
 				2B6ECB561B982EFE00E3DD29 /* StoriesItm.h */,
 				2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */,
 			);

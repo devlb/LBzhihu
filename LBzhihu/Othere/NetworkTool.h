@@ -26,7 +26,7 @@
 #define HOMEHEADHEIGHT 44
 #define IMAGEANDTITLEVIEWHEIGHT 200
 #define STORIESCELLH 100
-#define TOPVIEWH 130
+#define TOPVIEWH 150
 
 #define LEFTHEADVIEWH 80
 #define LEFTHOMEVIEWH 40
@@ -42,6 +42,8 @@
 + (instancetype)sharedNetworkTool;
 
 - (void)getThemeTypeWhensuccess:(void (^)(ThemeType *themeType))success failure:(void (^)())failure;
+
+- (void)getTodayStoriesWhensuccess:(void (^)(ContentList *contentList))success failure:(void (^)())failure;
 
 - (void)getStoriesListWithDate:(NSString *)dateString success:(void (^)(ContentList *contentList))success failure:(void (^)())failure;
 

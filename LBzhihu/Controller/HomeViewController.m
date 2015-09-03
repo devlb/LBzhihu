@@ -38,29 +38,38 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self addUI];
     
-    [self loadHomeData];
+    [self getTodayData];
 }
 
 - (void)addUI{
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds];
     
     self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 20, MAINSIZE.width, 44)];
-    //self.headView.leftImageView.image = [UIImage imageNamed:@""];
+    
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
     [self.headView.titleBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
     [self.headView.rightBtn setTitle:@"设置" forState:(UIControlStateNormal)];
    
-    
-    
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
+    
+    UIPageControl *pageControl = [[UIPageControl alloc]init];
+    pageControl.backgroundColor = [UIColor grayColor];
+
+    pageControl.frame = CGRectMake( 100, CGRectGetMaxY(self.topView.frame) -  20, 120, 20);
+    pageControl.currentPage = 0;
+    self.topView.pageControl = pageControl;
+    
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.topView.frame)) style:(UITableViewStyleGrouped)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
     
+   
+    
     [self.mainView addSubview:self.headView];
     [self.mainView addSubview:self.topView];
+    [self.mainView addSubview:pageControl];
     [self.mainView addSubview:self.tableView];
     [self.view addSubview:self.mainView];
     
@@ -95,26 +104,25 @@
     }
 }
 
-- (void)loadHomeData{
+- (void)getTodayData{
     storieArr = [NSMutableArray array];
-    NSDate *date = [[NSDate date] initWithTimeInterval:24 *60 * 60 sinceDate:[NSDate date]];;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"yyyyMMdd";
-    NSString *dateStr = [formatter stringFromDate:date];
-    
-    __weak typeof(self) weakSelf = self;
-    [[NetworkTool sharedNetworkTool] getStoriesListWithDate:dateStr success:^(ContentList *contentList) {
+     __weak typeof(self) weakSelf = self;
+    [[NetworkTool sharedNetworkTool] getTodayStoriesWhensuccess:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
-        
-    dispatch_async(dispatch_get_main_queue(), ^{
+        NSMutableArray *topImgs = [NSMutableArray array];
+        for (StoriesItm *itm in contentList.top_stories) {
+            [topImgs addObject:itm.image];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.topView setImgs:topImgs];
             [weakSelf.tableView reloadData];
-    });
+        });
         
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
     }];
     
-
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[NetworkTool sharedNetworkTool] getThemeTypeWhensuccess:^(ThemeType *themeType) {
             themeArr = themeType.others.mutableCopy;
@@ -127,6 +135,26 @@
         }];
     });
 
+}
+
+- (void)loadHomeData{
+    storieArr = [NSMutableArray array];
+    NSDate *date = [[NSDate date] initWithTimeInterval:24 *60 * 60 sinceDate:[NSDate date]];;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyyMMdd";
+    NSString *dateStr = [formatter stringFromDate:date];
+    
+    __weak typeof(self) weakSelf = self;
+    [[NetworkTool sharedNetworkTool] getStoriesListWithDate:dateStr success:^(ContentList *contentList) {
+        storieArr = contentList.stories.mutableCopy;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf.tableView reloadData];
+        });
+        
+    } failure:^{
+        [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
+    }];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -172,6 +200,23 @@
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    CGFloat edge = 8;
+    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 40)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(edge, 0, 100, 40)];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = @"今日要闻";
+    label.textColor = [UIColor redColor];
+    
+    [bgView addSubview:label];
+    
+    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
+        return bgView;
+    }else{
+        return [UIView new];
+    }
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
         return STORIESCELLH;
@@ -194,6 +239,7 @@
             
         }];
        // self.mainView.userInteractionEnabled = YES;
+      //  [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
         [self.mainView removeGestureRecognizer:tapHome];
         ThemeItm *itm = themeArr[indexPath.row];
         [self.headView.titleBtn setTitle:itm.name forState:(UIControlStateNormal)];
@@ -226,6 +272,8 @@
     NSLog(@"首页");
     self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
     self.mainView.alpha = 1;
+   // [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+    
    // self.mainView.userInteractionEnabled = YES;
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
    [self.mainView removeGestureRecognizer:tapHome];

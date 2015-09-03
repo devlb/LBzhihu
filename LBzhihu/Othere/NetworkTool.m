@@ -21,6 +21,7 @@ static NetworkTool *tool;
     return tool;
 }
 
+
 - (void)getThemeTypeWhensuccess:(void (^)(ThemeType *))success failure:(void (^)())failure{
     NSString *urlStr = @"http://news-at.zhihu.com/api/4/themes";
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -42,6 +43,28 @@ static NetworkTool *tool;
         }
     }];
 
+}
+
+- (void)getTodayStoriesWhensuccess:(void (^)(ContentList *))success failure:(void (^)())failure{
+   NSString *urlStr = @"http://news-at.zhihu.com/api/4/stories/latest";
+    NSURL *url = [NSURL URLWithString:urlStr];
+    
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
+    
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (connectionError) {
+            failure();
+        }else{
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+            
+            ContentList *t = [[ContentList alloc] initWithDictionary:dic];
+            if (t) {
+                success(t);
+            }else{
+                failure();
+            }
+        }
+    }];
 }
 
 - (void)getStoriesListWithDate:(NSString *)dateString success:(void (^)(ContentList *))success failure:(void (^)())failure{
