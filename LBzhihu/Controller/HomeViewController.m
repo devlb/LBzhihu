@@ -43,7 +43,6 @@
 
 - (void)addUI{
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds];
-    
     self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 20, MAINSIZE.width, 44)];
     
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
@@ -53,14 +52,17 @@
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
     
     UIPageControl *pageControl = [[UIPageControl alloc]init];
-    pageControl.backgroundColor = [UIColor grayColor];
-
+   // pageControl.backgroundColor = [UIColor grayColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+    pageControl.pageIndicatorTintColor = [UIColor blueColor];
+    
     pageControl.frame = CGRectMake( 100, CGRectGetMaxY(self.topView.frame) -  20, 120, 20);
     pageControl.currentPage = 0;
     self.topView.pageControl = pageControl;
     
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.topView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.topView.frame)) style:(UITableViewStyleGrouped)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain)];
+    self.tableView.tableHeaderView = self.topView;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
@@ -68,7 +70,7 @@
    
     
     [self.mainView addSubview:self.headView];
-    [self.mainView addSubview:self.topView];
+    //[self.mainView addSubview:self.topView];
     [self.mainView addSubview:pageControl];
     [self.mainView addSubview:self.tableView];
     [self.view addSubview:self.mainView];
@@ -76,9 +78,9 @@
     self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.8 *CGRectGetWidth(self.view.frame) , 20, 0.8 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
     self.leftView.headImgView.image = [UIImage imageNamed:@"头像.png"];
     self.leftView.userNameLabel.text = @"用户";
-    [self.leftView.homeBtn addTarget:self action:@selector(selectHome) forControlEvents:(UIControlEventTouchDragInside)];
+    [self.leftView.homeBtn addTarget:self action:@selector(tapHome) forControlEvents:(UIControlEventTouchDragInside)];
     
-    UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectHome)];
+    UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
     ontap.delegate = self;
     [self.leftView.homeView addGestureRecognizer:ontap];
     
@@ -93,29 +95,17 @@
     [self.view addGestureRecognizer:swipe];
 }
 
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
-    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-            self.mainView.alpha = 0.6;
-        }];
-       // self.mainView.userInteractionEnabled = NO;
-        [self addTapHome];
-    }
-}
+
 
 - (void)getTodayData{
     storieArr = [NSMutableArray array];
      __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getTodayStoriesWhensuccess:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
-        NSMutableArray *topImgs = [NSMutableArray array];
-        for (StoriesItm *itm in contentList.top_stories) {
-            [topImgs addObject:itm.image];
-        }
+        NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf.topView setImgs:topImgs];
+            [weakSelf.topView setStories:topStories];
             [weakSelf.tableView reloadData];
         });
         
@@ -177,6 +167,9 @@
         if (cell == nil) {
             cell = [[StoriesCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:identifier];
         }
+        if (!storieArr.count > 0) {
+            return cell;
+        }
         StoriesItm *itm = storieArr[indexPath.row];
         cell.textLabel.text = itm.title;
         if (itm.images.count > 0) {
@@ -200,22 +193,22 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    CGFloat edge = 8;
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 40)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(edge, 0, 100, 40)];
-    label.backgroundColor = [UIColor clearColor];
-    label.text = @"今日要闻";
-    label.textColor = [UIColor redColor];
-    
-    [bgView addSubview:label];
-    
-    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-        return bgView;
-    }else{
-        return [UIView new];
-    }
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+//    CGFloat edge = 8;
+//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 40)];
+//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(edge, 0, 100, 40)];
+//    label.backgroundColor = [UIColor clearColor];
+//    label.text = @"今日要闻";
+//    label.textColor = [UIColor redColor];
+//    
+//    [bgView addSubview:label];
+//    
+//    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
+//        return bgView;
+//    }else{
+//        return [UIView new];
+//    }
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
@@ -223,6 +216,10 @@
     }else{
         return 44;
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.1;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -239,7 +236,8 @@
             
         }];
        // self.mainView.userInteractionEnabled = YES;
-      //  [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+        [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+        self.tableView.tableHeaderView = [UIView new];
         [self.mainView removeGestureRecognizer:tapHome];
         ThemeItm *itm = themeArr[indexPath.row];
         [self.headView.titleBtn setTitle:itm.name forState:(UIControlStateNormal)];
@@ -250,6 +248,17 @@
 
 #define 左视图
 
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
+            self.mainView.alpha = 0.6;
+        }];
+        // self.mainView.userInteractionEnabled = NO;
+        [self addTapHome];
+    }
+}
+
 - (void)goLeftView{
     self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
     self.mainView.alpha = 0.6;
@@ -259,20 +268,17 @@
 }
 
 - (void)addTapHome{
-    tapHome = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topHome)];
+    tapHome = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
     tapHome.delegate = self;
     [self.mainView addGestureRecognizer:tapHome];
 }
 
-- (void)topHome{
-    [self selectHome];
-}
-
-- (void)selectHome{
+- (void)tapHome{
     NSLog(@"首页");
     self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
     self.mainView.alpha = 1;
-   // [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+    self.tableView.tableHeaderView = self.topView;
+    [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
     
    // self.mainView.userInteractionEnabled = YES;
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
@@ -300,7 +306,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
-
+    
 }
 
 - (void)didReceiveMemoryWarning {

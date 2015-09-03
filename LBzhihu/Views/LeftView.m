@@ -56,7 +56,7 @@
     [self.homeBtn setTitleColor:HOMEHEADBACKGROUNDCOLOR forState:(UIControlStateNormal)];
     [self.homeView addSubview:self.homeBtn];
 
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame) + edge, CGRectGetWidth(frame), CGRectGetHeight(frame) - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain - CGRectGetHeight(self.homeView.frame))];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), CGRectGetWidth(frame), CGRectGetHeight(frame) - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain - CGRectGetHeight(self.homeView.frame))];
     self.tableView.accessibilityNavigationStyle = UITableViewCellAccessoryDisclosureIndicator;
     self.tableView.tableHeaderView = self.homeView;
     self.tableView.tableFooterView = [UIView new];

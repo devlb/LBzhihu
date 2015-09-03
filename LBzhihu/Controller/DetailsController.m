@@ -87,6 +87,8 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+
+
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
     

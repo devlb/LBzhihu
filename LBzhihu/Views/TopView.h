@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "ImageAndTitleView.h"
+#import "StoriesItm.h"
+#import "NetworkTool.h"
 
-@interface TopView : UIScrollView<UIScrollViewDelegate>
+@interface TopView : UIScrollView
 
 @property (nonatomic,strong)  UIPageControl *pageControl;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 
-- (void)setImgs:(NSArray *)imgs;
+- (void)setStories:(NSArray *)stories;
 
 @end
