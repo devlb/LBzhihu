@@ -14,7 +14,7 @@
     if ([key isEqualToString:@"description"]) {
         [super setValue:value forKey:@"desc"];
     }else if ([key isEqualToString:@"id"]){
-        [super setValue:key forKey:@"ThemeId"];
+        [super setValue:value forKey:@"themeId"];
     }else{
         [super setValue:value forKey:key];
     }

@@ -14,7 +14,7 @@
 @property (nonatomic,strong) NSString *color;
 @property (nonatomic,strong) NSString *thumbnail;
 @property (nonatomic,strong) NSString *desc;
-@property (nonatomic,strong) NSString *ThemeId;
+@property (nonatomic,strong) NSString *themeId;
 @property (nonatomic,strong) NSString *name;
 
 @end

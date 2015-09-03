@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PubilcMember.m"
+#import "NetworkTool.h"
 
 @interface HomeHeadView : UIView
 
 @property (nonatomic,strong) UIImageView *leftImageView;
-@property (nonatomic,strong) UILabel *titleLabel;
+@property (nonatomic,strong) UIButton *titleBtn;
 @property (nonatomic,strong) UIButton *rightBtn;
 
 - (instancetype)initWithFrame:(CGRect)frame;

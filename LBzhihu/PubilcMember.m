@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+
 #pragma mark colour
 
 
@@ -16,5 +17,16 @@
 
 #pragma mark height
 
+#define MAINSIZE ([[UIScreen mainScreen] bounds].size)
 #define HOMEHEADHEIGHT 44
 #define IMAGEANDTITLEVIEWHEIGHT 200
+#define STORIESCELLH 100
+#define TOPVIEWH 130
+
+#define LEFTHEADVIEWH 80
+#define LEFTHOMEVIEWH 40
+
+#pragma mark tag
+
+#define HOMELEFTTABLEVIEWTAG 80
+#define HOMEMAINTABLEVIEWTAG 81
