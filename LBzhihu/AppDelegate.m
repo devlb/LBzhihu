@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "HomeViewController.h"
-#import "PubilcMember.m"
 
 @interface AppDelegate ()
 

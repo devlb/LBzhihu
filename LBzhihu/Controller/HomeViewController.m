@@ -21,6 +21,7 @@
     NSMutableArray *themeArr;
     NSMutableArray *homeDataArr;
     UITapGestureRecognizer *tapHome;
+    UIView *containerView;//用来作为TopView和pageControl的共同父View
 }
 
 @property (nonatomic,strong) UIView *mainView;
@@ -51,29 +52,32 @@
     [self.headView.titleBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
     [self.headView.rightBtn setTitle:@"设置" forState:(UIControlStateNormal)];
    
-    self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
+    self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, TOPVIEWH)];
     
     UIPageControl *pageControl = [[UIPageControl alloc]init];
-   // pageControl.backgroundColor = [UIColor grayColor];
-    pageControl.currentPageIndicatorTintColor = [UIColor redColor];
-    pageControl.pageIndicatorTintColor = [UIColor blueColor];
+   /// pageControl.backgroundColor = [UIColor redColor];
+    pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
+    pageControl.pageIndicatorTintColor = [UIColor grayColor];
     
     pageControl.frame = CGRectMake( 100, CGRectGetMaxY(self.topView.frame) -  20, 120, 20);
     pageControl.currentPage = 0;
     self.topView.pageControl = pageControl;
     
+
+    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
+    [containerView addSubview:self.topView];
+    [containerView addSubview:pageControl];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain)];
-    self.tableView.tableHeaderView = self.topView;
+    self.tableView.tableHeaderView = containerView;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
-    
    
     
     [self.mainView addSubview:self.headView];
     //[self.mainView addSubview:self.topView];
-    [self.mainView addSubview:pageControl];
+    
     [self.mainView addSubview:self.tableView];
     [self.view addSubview:self.mainView];
     
@@ -101,12 +105,17 @@
 
 - (void)getTodayData{
     storieArr = [NSMutableArray array];
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"正在加载";
+    
      __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getTodayStoriesWhensuccess:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
          homeDataArr = storieArr.mutableCopy;
         NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
             [weakSelf.topView setStories:topStories];
             [weakSelf.tableView reloadData];
         });
@@ -136,12 +145,15 @@
     formatter.dateFormat = @"yyyyMMdd";
     NSString *dateStr = [formatter stringFromDate:date];
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"正在加载";
     __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getStoriesListWithDate:dateStr success:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
+            [hud hide:YES];
         });
         
     } failure:^{
@@ -279,7 +291,7 @@
     NSLog(@"首页");
     self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
     self.mainView.alpha = 1;
-    self.tableView.tableHeaderView = self.topView;
+    self.tableView.tableHeaderView = containerView;
     [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
     
    // self.mainView.userInteractionEnabled = YES;
@@ -293,10 +305,14 @@
     storieArr = [NSMutableArray array];
     __weak  typeof(self) weakSelf = self;
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"正在加载";
+    
     [[NetworkTool sharedNetworkTool] getStoriesListWithStorieId:storieId success:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
+            [hud hide:YES];
         });
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取失败" message:@"获取列表,请检查网络" delegate:nil cancelButtonTitle:@"取消 " otherButtonTitles:@"确定", nil] show];

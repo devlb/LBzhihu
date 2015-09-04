@@ -1,12 +1,13 @@
 //
-//  PubilcMember.m
+//  Public.m
 //  LBzhihu
 //
-//  Created by lb on 15/9/2.
+//  Created by lb on 15/9/4.
 //  Copyright (c) 2015年 李波. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <MBProgressHUD.h>
 
 
 #pragma mark colour
@@ -21,7 +22,7 @@
 #define HOMEHEADHEIGHT 44
 #define IMAGEANDTITLEVIEWHEIGHT 200
 #define STORIESCELLH 100
-#define TOPVIEWH 130
+#define TOPVIEWH 180
 
 #define LEFTHEADVIEWH 80
 #define LEFTHOMEVIEWH 40

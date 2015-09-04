@@ -9,6 +9,7 @@
 #import "DetailsController.h"
 #import "NetworkTool.h"
 //#import "PubilcMember.m"
+#import <MBProgressHUD.h>
 
 @interface DetailsController ()<UIWebViewDelegate>
 
@@ -49,9 +50,18 @@
 
 - (void)loadData{
     
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"正在加载网页";
+    
+    
     __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:weakSelf.storiesId success:^(DetailsModel *detailsModel) {
-        [weakSelf showInWebViewWithDetailsModel:detailsModel];
+      
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            [weakSelf showInWebViewWithDetailsModel:detailsModel];
+        });
+        
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
     }];
