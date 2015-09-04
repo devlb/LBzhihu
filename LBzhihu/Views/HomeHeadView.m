@@ -19,15 +19,14 @@
 
 - (void)addUIWithFrame:(CGRect)frame{
     self.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
-    
     CGFloat edge = 8;
     CGFloat imageW = CGRectGetHeight(frame) - 2 * edge;
     CGFloat titleLabelW = 120;
     CGFloat rightBtnW = 60;
     
     self.leftImageView = [[UIImageView alloc] initWithFrame:CGRectMake(edge, edge, imageW, imageW)];
-    self.leftImageView.image = [UIImage imageNamed:@"更多.png"];
-    
+    self.leftImageView.image = [UIImage imageNamed:@"icon.bundle.Home_Icon.png"];
+
     self.titleBtn = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.leftImageView.frame) + edge, edge, titleLabelW, imageW)];
     self.titleBtn.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self.titleBtn setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];

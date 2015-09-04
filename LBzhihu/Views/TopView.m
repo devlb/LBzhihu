@@ -39,7 +39,7 @@
         StoriesItm *itm = stories[i];
         NSString *imgUrlString = itm.image;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * imgW, 0, imgW, CGRectGetHeight(self.frame))];
-        [imageView  sd_setImageWithURL:[NSURL URLWithString:imgUrlString] placeholderImage:[UIImage imageNamed:@"知乎.png"]];
+        [imageView  sd_setImageWithURL:[NSURL URLWithString:imgUrlString] placeholderImage:[UIImage imageNamed:@"Image_Preview@2x.png"]];
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(edge,TOPVIEWH - 2 * edge - 60, imgW - 2 * edge, 30)];
         titleLabel.backgroundColor = [UIColor clearColor];

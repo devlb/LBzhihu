@@ -13,8 +13,8 @@
 
 @interface DetailsController ()<UIWebViewDelegate>
 
-@property (nonatomic,strong) UIView *headView;
 @property (nonatomic,strong) UIWebView *webView;
+@property (nonatomic,strong) UIView *toolView;
 
 @end
 
@@ -29,23 +29,15 @@
 
 - (void)addUI{
     self.view.backgroundColor = [UIColor whiteColor];
-    CGFloat edge = 8;
-    self.headView = [[UIView alloc] initWithFrame:CGRectMake(0, 20,MAINSIZE.width, 44)];
-    self.headView.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
-    UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(edge, edge, 60, 44 - 2 * edge)];
-    [backBtn setTitle:@"返回" forState:(UIControlStateNormal)];
-    [backBtn setTitleColor:[UIColor whiteColor] forState:(UIControlStateNormal)];
-    [backBtn addTarget:self action:@selector(back) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.headView addSubview:backBtn];
-    
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame)- 20, MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame))];
+    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, MAINSIZE.height - DETAILTOOLVIEWH)];
     self.webView.scrollView.bounces = YES;
     self.webView.delegate = self;
     
+    self.toolView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - DETAILTOOLVIEWH, MAINSIZE.width, DETAILTOOLVIEWH)];
+    self.toolView.backgroundColor = [UIColor whiteColor];
     
-    [self.view addSubview:self.headView];
-    [self.headView addSubview:self.webView];
-
+    [self.view addSubview:self.webView];
+    [self.view addSubview:self.toolView];
 }
 
 - (void)loadData{

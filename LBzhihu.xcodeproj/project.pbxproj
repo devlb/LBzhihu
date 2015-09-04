@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		2B0336B11B974E56008A22A0 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B01B974E56008A22A0 /* Reveal.framework */; };
 		2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B21B974E67008A22A0 /* libz.dylib */; };
-		2B0D1EEE1B98364000516C65 /* 更多.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B0D1EED1B98364000516C65 /* 更多.png */; };
 		2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */; };
 		2B66A6531B997B57002A5AA5 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66A6521B997B57002A5AA5 /* Public.m */; };
 		2B66A6551B997EA2002A5AA5 /* libSDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A6541B997EA2002A5AA5 /* libSDWebImage.a */; };
-		2B6ECAFB1B982D1000E3DD29 /* 头像.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B6ECAF91B982D1000E3DD29 /* 头像.png */; };
-		2B6ECAFC1B982D1000E3DD29 /* 知乎.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B6ECAFA1B982D1000E3DD29 /* 知乎.png */; };
+		2B66A6591B99986B002A5AA5 /* icon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2B66A6581B99986B002A5AA5 /* icon.bundle */; };
 		2B6ECB321B982EB600E3DD29 /* NetworkTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB301B982EB600E3DD29 /* NetworkTool.m */; };
 		2B6ECB381B982EC300E3DD29 /* DetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB351B982EC300E3DD29 /* DetailsController.m */; };
 		2B6ECB391B982EC300E3DD29 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB371B982EC300E3DD29 /* HomeViewController.m */; };
@@ -35,6 +33,7 @@
 		2BDAB2931B972088000ADE68 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BDAB2921B972088000ADE68 /* Images.xcassets */; };
 		2BDAB2961B972088000ADE68 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2BDAB2941B972088000ADE68 /* LaunchScreen.xib */; };
 		2BDAB2A21B972088000ADE68 /* LBzhihuTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDAB2A11B972088000ADE68 /* LBzhihuTests.m */; };
+		2BDE042F1B99A3AB00913B3A /* libMJRefresh.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDE042E1B99A3AB00913B3A /* libMJRefresh.a */; };
 		5E27AA14E00A841F19FA6F56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76C49D7F64AA8AE65B29E078 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -51,12 +50,10 @@
 /* Begin PBXFileReference section */
 		2B0336B01B974E56008A22A0 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		2B0336B21B974E67008A22A0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		2B0D1EED1B98364000516C65 /* 更多.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "更多.png"; path = "icon/更多.png"; sourceTree = "<group>"; };
 		2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "Pods/../build/Debug-iphoneos/libMBProgressHUD.a"; sourceTree = "<group>"; };
 		2B66A6521B997B57002A5AA5 /* Public.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Public.m; path = Othere/Public.m; sourceTree = "<group>"; };
 		2B66A6541B997EA2002A5AA5 /* libSDWebImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDWebImage.a; path = "Pods/../build/Debug-iphoneos/libSDWebImage.a"; sourceTree = "<group>"; };
-		2B6ECAF91B982D1000E3DD29 /* 头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "头像.png"; path = "icon/头像.png"; sourceTree = "<group>"; };
-		2B6ECAFA1B982D1000E3DD29 /* 知乎.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "知乎.png"; path = "icon/知乎.png"; sourceTree = "<group>"; };
+		2B66A6581B99986B002A5AA5 /* icon.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = icon.bundle; sourceTree = "<group>"; };
 		2B6ECB2F1B982EB600E3DD29 /* NetworkTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkTool.h; path = Othere/NetworkTool.h; sourceTree = "<group>"; };
 		2B6ECB301B982EB600E3DD29 /* NetworkTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NetworkTool.m; path = Othere/NetworkTool.m; sourceTree = "<group>"; };
 		2B6ECB341B982EC300E3DD29 /* DetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailsController.h; path = Controller/DetailsController.h; sourceTree = "<group>"; };
@@ -96,6 +93,7 @@
 		2BDAB29B1B972088000ADE68 /* LBzhihuTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LBzhihuTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BDAB2A01B972088000ADE68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BDAB2A11B972088000ADE68 /* LBzhihuTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBzhihuTests.m; sourceTree = "<group>"; };
+		2BDE042E1B99A3AB00913B3A /* libMJRefresh.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMJRefresh.a; path = "Pods/../build/Debug-iphoneos/libMJRefresh.a"; sourceTree = "<group>"; };
 		76C49D7F64AA8AE65B29E078 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B67BD3748431F132A66D08F7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		DB23DBB086DD58D327D9B1F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BDE042F1B99A3AB00913B3A /* libMJRefresh.a in Frameworks */,
 				2B66A6551B997EA2002A5AA5 /* libSDWebImage.a in Frameworks */,
 				2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */,
 				2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */,
@@ -127,6 +126,7 @@
 		03B35840B8B27C1E51912D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2BDE042E1B99A3AB00913B3A /* libMJRefresh.a */,
 				2B66A6541B997EA2002A5AA5 /* libSDWebImage.a */,
 				2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */,
 				76C49D7F64AA8AE65B29E078 /* libPods.a */,
@@ -187,6 +187,7 @@
 		2B03366A1B972160008A22A0 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				2B66A6581B99986B002A5AA5 /* icon.bundle */,
 				2B66A6521B997B57002A5AA5 /* Public.m */,
 				2B6ECB2F1B982EB600E3DD29 /* NetworkTool.h */,
 				2B6ECB301B982EB600E3DD29 /* NetworkTool.m */,
@@ -205,16 +206,6 @@
 				2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */,
 			);
 			name = "内容";
-			sourceTree = "<group>";
-		};
-		2BADAD201B97DF39006AD437 /* icon */ = {
-			isa = PBXGroup;
-			children = (
-				2B0D1EED1B98364000516C65 /* 更多.png */,
-				2B6ECAF91B982D1000E3DD29 /* 头像.png */,
-				2B6ECAFA1B982D1000E3DD29 /* 知乎.png */,
-			);
-			name = icon;
 			sourceTree = "<group>";
 		};
 		2BDAB2791B972088000ADE68 = {
@@ -241,7 +232,6 @@
 		2BDAB2841B972088000ADE68 /* LBzhihu */ = {
 			isa = PBXGroup;
 			children = (
-				2BADAD201B97DF39006AD437 /* icon */,
 				2B03366A1B972160008A22A0 /* Other */,
 				2B0336511B972105008A22A0 /* Controller */,
 				2B0336601B972142008A22A0 /* Views */,
@@ -374,10 +364,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B6ECAFC1B982D1000E3DD29 /* 知乎.png in Resources */,
-				2B6ECAFB1B982D1000E3DD29 /* 头像.png in Resources */,
+				2B66A6591B99986B002A5AA5 /* icon.bundle in Resources */,
 				2BDAB2911B972088000ADE68 /* Main.storyboard in Resources */,
-				2B0D1EEE1B98364000516C65 /* 更多.png in Resources */,
 				2BDAB2961B972088000ADE68 /* LaunchScreen.xib in Resources */,
 				2BDAB2931B972088000ADE68 /* Images.xcassets in Resources */,
 			);

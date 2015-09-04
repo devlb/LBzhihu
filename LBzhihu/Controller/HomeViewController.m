@@ -14,6 +14,7 @@
 #import "DetailsController.h"
 #import "LeftView.h"
 #import "UIImageView+WebCache.h"
+#import <MJRefresh.h>
 
 @interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -22,6 +23,8 @@
     NSMutableArray *homeDataArr;
     UITapGestureRecognizer *tapHome;
     UIView *containerView;//用来作为TopView和pageControl的共同父View
+    int curPage;
+    int curThemeId; /*<话题id，首页-1*/
 }
 
 @property (nonatomic,strong) UIView *mainView;
@@ -37,6 +40,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    curPage = 0;
+    curThemeId = -1;
     homeDataArr = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
     [self addUI];
@@ -47,10 +52,10 @@
 - (void)addUI{
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds];
     self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 20, MAINSIZE.width, 44)];
-    
+   
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
     [self.headView.titleBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.headView.rightBtn setTitle:@"设置" forState:(UIControlStateNormal)];
+    [self.headView.rightBtn setImage:[UIImage imageNamed:@"icon.bundle/Menu_Icon_Setting@2x.png"] forState:(UIControlStateNormal)];
    
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, TOPVIEWH)];
     
@@ -62,7 +67,6 @@
     pageControl.frame = CGRectMake( 100, CGRectGetMaxY(self.topView.frame) -  20, 120, 20);
     pageControl.currentPage = 0;
     self.topView.pageControl = pageControl;
-    
 
     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
     [containerView addSubview:self.topView];
@@ -73,18 +77,17 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
-   
+    self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
+    self.tableView.footer.automaticallyChangeAlpha = YES;
     
     [self.mainView addSubview:self.headView];
-    //[self.mainView addSubview:self.topView];
-    
     [self.mainView addSubview:self.tableView];
     [self.view addSubview:self.mainView];
     
     self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.8 *CGRectGetWidth(self.view.frame) , 20, 0.8 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
     self.leftView.headImgView.image = [UIImage imageNamed:@"头像.png"];
     self.leftView.userNameLabel.text = @"用户";
-    [self.leftView.homeBtn addTarget:self action:@selector(tapHome) forControlEvents:(UIControlEventTouchDragInside)];
+    [self.leftView.homeBtn addTarget:self action:@selector(goHome) forControlEvents:(UIControlEventTouchDragInside)];
     
     UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
     ontap.delegate = self;
@@ -102,6 +105,10 @@
 }
 
 
+- (void)loadMoreData{
+    [self loadHomeData];
+    
+}
 
 - (void)getTodayData{
     storieArr = [NSMutableArray array];
@@ -139,8 +146,7 @@
 }
 
 - (void)loadHomeData{
-    storieArr = [NSMutableArray array];
-    NSDate *date = [[NSDate date] initWithTimeInterval:24 *60 * 60 sinceDate:[NSDate date]];;
+    NSDate *date = [[NSDate date] initWithTimeInterval:- 24 *60 * 60 * curPage sinceDate:[NSDate date]];;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     formatter.dateFormat = @"yyyyMMdd";
     NSString *dateStr = [formatter stringFromDate:date];
@@ -149,13 +155,20 @@
     hud.labelText = @"正在加载";
     __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getStoriesListWithDate:dateStr success:^(ContentList *contentList) {
-        storieArr = contentList.stories.mutableCopy;
+       // storieArr = contentList.stories.mutableCopy;
+        
+        for (id tmp in contentList.stories.mutableCopy) {
+            [storieArr addObject:tmp];
+        }
+        curPage ++;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
             [hud hide:YES];
+            weakSelf.tableView.footer.hidden = YES;
+           
         });
-        
+            weakSelf.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:weakSelf refreshingAction:@selector(loadMoreData)];
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
     }];
@@ -187,7 +200,7 @@
         StoriesItm *itm = storieArr[indexPath.row];
         cell.textLabel.text = itm.title;
         if (itm.images.count > 0) {
-             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[itm.images firstObject]] placeholderImage:[UIImage imageNamed:@"知乎.png"]];
+             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[itm.images firstObject]] placeholderImage:[UIImage imageNamed:@"icon.bundle/Image_Preview@2x.png"]];
         }else{
             cell.imageView.image = nil;
         }
@@ -207,22 +220,6 @@
     }
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    CGFloat edge = 8;
-//    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 40)];
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(edge, 0, 100, 40)];
-//    label.backgroundColor = [UIColor clearColor];
-//    label.text = @"今日要闻";
-//    label.textColor = [UIColor redColor];
-//    
-//    [bgView addSubview:label];
-//    
-//    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-//        return bgView;
-//    }else{
-//        return [UIView new];
-//    }
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
@@ -255,6 +252,8 @@
         [self.mainView removeGestureRecognizer:tapHome];
         ThemeItm *itm = themeArr[indexPath.row];
         [self.headView.titleBtn setTitle:itm.name forState:(UIControlStateNormal)];
+        curThemeId = [itm.themeId intValue];
+        storieArr = [NSMutableArray array];
         [self loadTypeDataWithStorieId:itm.themeId];
     }
 }
@@ -268,6 +267,7 @@
             self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
             self.mainView.alpha = 0.6;
         }];
+        
         // self.mainView.userInteractionEnabled = NO;
         [self addTapHome];
     }
@@ -287,37 +287,65 @@
     [self.mainView addGestureRecognizer:tapHome];
 }
 
+- (void)goHome{
+    curThemeId = -1;
+    [self tapHome];
+}
+
 - (void)tapHome{
     NSLog(@"首页");
     self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
     self.mainView.alpha = 1;
-    self.tableView.tableHeaderView = containerView;
     [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+   
+    if (curThemeId == -1) {
+        self.tableView.tableHeaderView = containerView;
+    }else{
+        self.tableView.tableHeaderView = [UIView new];
+    }
     
    // self.mainView.userInteractionEnabled = YES;
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
    [self.mainView removeGestureRecognizer:tapHome];
+    
     storieArr = homeDataArr;
     [self.tableView reloadData];
 }
 
+//加载某个话题下的列表
 - (void)loadTypeDataWithStorieId:(NSString *)storieId{
-    storieArr = [NSMutableArray array];
+  //  storieArr = [NSMutableArray array];
     __weak  typeof(self) weakSelf = self;
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在加载";
     
     [[NetworkTool sharedNetworkTool] getStoriesListWithStorieId:storieId success:^(ContentList *contentList) {
-        storieArr = contentList.stories.mutableCopy;
+        
+        for (id tmp in contentList.stories.mutableCopy) {
+            [storieArr addObject:tmp];
+        }
+        homeDataArr = storieArr;
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
             [hud hide:YES];
         });
+        
+    weakSelf.tableView.footer = [MJRefreshAutoFooter footerWithRefreshingTarget:weakSelf refreshingAction:@selector(loadMoreTypeData)];
+        
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取失败" message:@"获取列表,请检查网络" delegate:nil cancelButtonTitle:@"取消 " otherButtonTitles:@"确定", nil] show];
     }];
 
+}
+
+//加载更多话题内容
+- (void)loadMoreTypeData{
+    StoriesItm *itm = [storieArr lastObject];
+    NSString *storieId =  itm.storiesId;
+    NSString *idString = [NSString stringWithFormat:@"%d/before/%@",curThemeId,storieId];
+    [self loadTypeDataWithStorieId:idString];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
@@ -335,7 +363,7 @@
 }
 
 /*
-#pragma mark - Navigation
+#pragma mark - Navigationdidselect
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
