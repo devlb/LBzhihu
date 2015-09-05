@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2B0336B11B974E56008A22A0 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B01B974E56008A22A0 /* Reveal.framework */; };
 		2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B21B974E67008A22A0 /* libz.dylib */; };
+		2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6606611B9A99F300D87BD9 /* DetailsInfo.m */; };
 		2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */; };
 		2B66A6531B997B57002A5AA5 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66A6521B997B57002A5AA5 /* Public.m */; };
 		2B66A6551B997EA2002A5AA5 /* libSDWebImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A6541B997EA2002A5AA5 /* libSDWebImage.a */; };
@@ -50,6 +51,8 @@
 /* Begin PBXFileReference section */
 		2B0336B01B974E56008A22A0 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		2B0336B21B974E67008A22A0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		2B6606601B9A99F300D87BD9 /* DetailsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsInfo.h; sourceTree = "<group>"; };
+		2B6606611B9A99F300D87BD9 /* DetailsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsInfo.m; sourceTree = "<group>"; };
 		2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "Pods/../build/Debug-iphoneos/libMBProgressHUD.a"; sourceTree = "<group>"; };
 		2B66A6521B997B57002A5AA5 /* Public.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Public.m; path = Othere/Public.m; sourceTree = "<group>"; };
 		2B66A6541B997EA2002A5AA5 /* libSDWebImage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDWebImage.a; path = "Pods/../build/Debug-iphoneos/libSDWebImage.a"; sourceTree = "<group>"; };
@@ -204,6 +207,8 @@
 				2B6ECB531B982EFE00E3DD29 /* ContentList.m */,
 				2B6ECB561B982EFE00E3DD29 /* StoriesItm.h */,
 				2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */,
+				2B6606601B9A99F300D87BD9 /* DetailsInfo.h */,
+				2B6606611B9A99F300D87BD9 /* DetailsInfo.m */,
 			);
 			name = "内容";
 			sourceTree = "<group>";
@@ -426,6 +431,7 @@
 				2B6ECB451B982ED200E3DD29 /* ImageAndTitleView.m in Sources */,
 				2B6ECB461B982ED200E3DD29 /* LeftView.m in Sources */,
 				2B66A6531B997B57002A5AA5 /* Public.m in Sources */,
+				2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */,
 				2B6ECB581B982EFE00E3DD29 /* ContentList.m in Sources */,
 				2BDAB2881B972088000ADE68 /* main.m in Sources */,
 				2B6ECB441B982ED200E3DD29 /* HomeHeadView.m in Sources */,

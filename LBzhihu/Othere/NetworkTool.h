@@ -14,6 +14,7 @@
 #import "ContentList.h"
 #import "DetailsModel.h"
 #import "Public.m"
+#import "DetailsInfo.h"
 
 @interface NetworkTool : NSObject
 
@@ -28,5 +29,7 @@
 - (void)getDetailsWithStoriesId:(NSString *)storiesId success:(void (^)(DetailsModel *detailsModel))success failure:(void (^)())failure;
 
 - (void)getStoriesListWithStorieId :(NSString *)storieId success:(void (^)(ContentList *contentList))success failure:(void (^)())failure;
+
+- (void)getDetailsInfoWithWithStoriesId:(NSString *)storiesId success:(void(^)(DetailsInfo *infon))success failure:(void (^)())failure;
 
 @end

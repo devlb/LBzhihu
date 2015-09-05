@@ -21,78 +21,48 @@ static NetworkTool *tool;
     return tool;
 }
 
-
 - (void)getThemeTypeWhensuccess:(void (^)(ThemeType *))success failure:(void (^)())failure{
     NSString *urlStr = @"http://news-at.zhihu.com/api/4/themes";
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (connectionError) {
-            failure();
-        }else{
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-            
-            ThemeType *t = [[ThemeType alloc] initWithDictionary:dic];
-            if (t) {
-               success(t);
-            }else{
-                failure();
-            }            
-        }
-    }];
-
+    [self getDataWithUrlString:urlStr WithClass:[ThemeType class] success:success failure:failure];
 }
 
 - (void)getTodayStoriesWhensuccess:(void (^)(ContentList *))success failure:(void (^)())failure{
    NSString *urlStr = @"http://news-at.zhihu.com/api/4/stories/latest";
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (connectionError) {
-            failure();
-        }else{
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-            
-            ContentList *t = [[ContentList alloc] initWithDictionary:dic];
-            if (t) {
-                success(t);
-            }else{
-                failure();
-            }
-        }
-    }];
+    [self getDataWithUrlString:urlStr WithClass:[ContentList class] success:success failure:failure];
 }
 
 - (void)getStoriesListWithDate:(NSString *)dateString success:(void (^)(ContentList *))success failure:(void (^)())failure{
     NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/stories/before/%@",dateString];
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (connectionError) {
-            failure();
-        }else{
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-            
-            ContentList *t = [[ContentList alloc] initWithDictionary:dic];
-            if (t) {
-                success(t);
-            }else{
-                failure();
-            }
-        }
-    }];
+    [self getDataWithUrlString:urlStr WithClass:[ContentList class] success:success failure:failure];
 }
 
 - (void)getDetailsWithStoriesId:(NSString *)storiesId success:(void (^)(DetailsModel *))success failure:(void (^)())failure{
     NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/story/%@",storiesId];
-    NSURL *url = [NSURL URLWithString:urlStr];
     
+    [self getDataWithUrlString:urlStr WithClass:[DetailsModel class] success:success failure:failure];
+}
+
+- (void)getStoriesListWithStorieId:(NSString *)storieId success:(void (^)(ContentList *))success failure:(void (^)())failure{
+    NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/theme/%@",storieId];
+    
+    [self getDataWithUrlString:urlStr WithClass:[ContentList class] success:success failure:failure];    
+}
+
+//评论 赞数量
+
+- (void)getDetailsInfoWithWithStoriesId:(NSString *)storiesId success:(void (^)(DetailsInfo *))success failure:(void (^)())failure{
+    NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/story-extra/%@",storiesId];
+    
+    [self getDataWithUrlString:urlStr WithClass:[DetailsInfo class] success:success failure:failure];
+}
+
+
+- (void)getDataWithUrlString:(NSString *)urlString WithClass:(Class)className success:(void (^)(id data))success failure:(void (^)())failure{
+
+    NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15];
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -101,7 +71,7 @@ static NetworkTool *tool;
         }else{
             NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
             
-            DetailsModel *t = [[DetailsModel alloc] initWithDictionary:dic];
+            id t = [[className alloc] initWithDictionary:dic];
             if (t) {
                 success(t);
             }else{
@@ -109,28 +79,7 @@ static NetworkTool *tool;
             }
         }
     }];
-}
-
-- (void)getStoriesListWithStorieId:(NSString *)storieId success:(void (^)(ContentList *))success failure:(void (^)())failure{
-    NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/theme/%@",storieId];
-    NSURL *url = [NSURL URLWithString:urlStr];
     
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (connectionError) {
-            failure();
-        }else{
-            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-            
-            ContentList *t = [[ContentList alloc] initWithDictionary:dic];
-            if (t) {
-                success(t);
-            }else{
-                failure();
-            }
-        }
-    }];
 }
 
 @end

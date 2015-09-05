@@ -11,7 +11,7 @@
 //#import "PubilcMember.m"
 #import <MBProgressHUD.h>
 
-@interface DetailsController ()<UIWebViewDelegate>
+@interface DetailsController ()<UIWebViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) UIView *toolView;
@@ -35,9 +35,36 @@
     
     self.toolView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(self.view.frame) - DETAILTOOLVIEWH, MAINSIZE.width, DETAILTOOLVIEWH)];
     self.toolView.backgroundColor = [UIColor whiteColor];
+    self.toolView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    NSArray *names = @[@"back",@"down",@"like",@"share",@"comments"];
+    NSArray *imgs = @[@"Comment_Icon_Back@2x.png",@"News_Navigation_Next_Highlight@2x.png",@"News_Navigation_Vote@2x.png",@"News_Navigation_Share@2x.png",@"News_Navigation_Comment@2x.png"];
+    
+   
+    CGFloat btnH = DETAILTOOLVIEWH;
+    CGFloat btnW = 60;
+    CGFloat edge = (MAINSIZE.width - 5 * btnW) / 6.0;
+    CGFloat top = (DETAILTOOLVIEWH - btnH) / 2.0;
+    
+    for(int i = 0;i < 5;i++){
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(i * btnW + (i + 1) * edge, top, btnW, btnH)];
+        btn.translatesAutoresizingMaskIntoConstraints = NO;
+        btn.tag = DETAILSTOOLTAG + i;
+        [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon.bundle/%@",imgs[i]]] forState:(UIControlStateNormal)];
+        SEL s =  NSSelectorFromString(names[i]);
+        [btn addTarget:self action:s forControlEvents:(UIControlEventTouchUpInside)];
+        [self.toolView addSubview:btn];
+    }
+    
     
     [self.view addSubview:self.webView];
     [self.view addSubview:self.toolView];
+    
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    swipe.delegate = self;
+    [self.view addGestureRecognizer:swipe];
+    
+    
 }
 
 - (void)loadData{
@@ -58,6 +85,14 @@
         [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
     }];
 
+    
+    [[NetworkTool sharedNetworkTool] getDetailsInfoWithWithStoriesId:self.storiesId   success:^(DetailsInfo *infon) {
+        
+    } failure:^{
+        nil;
+    }];
+    
+    
 }
 
 #pragma mark - ******************** 拼接html语言
@@ -98,38 +133,35 @@
 }
 
 
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        [self back];
+    }
+}
 
 
-//- (void)showInWebViewWithDetailsModel:(DetailsModel *)model{
-//    NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<!DOCTYPE HTML><html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">"];
-//    [htmlString appendFormat:@"<title>%@</title></head>",model.title];
-//    for (NSString *cssUrlString in model.css) {
-//        [htmlString appendFormat:@"<link href=""%@",cssUrlString];
-//        [htmlString appendFormat:@" rel=""stylesheet"" type=""text/css"">"];
-//    }
-//    [htmlString appendFormat:@"<body>"];
-//    [htmlString appendFormat:@"%@",model.body];
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\n" withString:@"!@!n"] mutableCopy];
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\r" withString:@"!@!r"] mutableCopy];
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\p" withString:@"!@!p"] mutableCopy];
-//    
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\\"  withString:@""] mutableCopy];
-//    
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!n" withString:@"\n"] mutableCopy];
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!r" withString:@"\r"] mutableCopy];
-//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!p" withString:@"\p"] mutableCopy];
-//
-//    
-//    [htmlString appendFormat:@"</body></html>"];
-//    
-//    [self.webView loadHTMLString:htmlString baseURL:nil];
-//}
+#pragma mark toolView
 
 - (void)back{
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (void)down{
+    NSLog(@"向下");
+}
 
+- (void)like{
+    NSLog(@"赞");
+}
+
+- (void)share{
+    NSLog(@"分享");
+}
+
+- (void)comments{
+
+    NSLog(@"评论");
+}
 
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
