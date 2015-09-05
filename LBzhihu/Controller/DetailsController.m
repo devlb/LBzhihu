@@ -10,9 +10,12 @@
 #import "NetworkTool.h"
 //#import "PubilcMember.m"
 #import <MBProgressHUD.h>
+#import "UIButton+Badge.h"
 
 @interface DetailsController ()<UIWebViewDelegate,UIGestureRecognizerDelegate>
-
+{
+    NSMutableArray *btns;
+}
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) UIView *toolView;
 
@@ -37,6 +40,7 @@
     self.toolView.backgroundColor = [UIColor whiteColor];
     self.toolView.translatesAutoresizingMaskIntoConstraints = NO;
     
+    btns = [NSMutableArray array];
     NSArray *names = @[@"back",@"down",@"like",@"share",@"comments"];
     NSArray *imgs = @[@"Comment_Icon_Back@2x.png",@"News_Navigation_Next_Highlight@2x.png",@"News_Navigation_Vote@2x.png",@"News_Navigation_Share@2x.png",@"News_Navigation_Comment@2x.png"];
     
@@ -53,9 +57,10 @@
         [btn setImage:[UIImage imageNamed:[NSString stringWithFormat:@"icon.bundle/%@",imgs[i]]] forState:(UIControlStateNormal)];
         SEL s =  NSSelectorFromString(names[i]);
         [btn addTarget:self action:s forControlEvents:(UIControlEventTouchUpInside)];
+        
         [self.toolView addSubview:btn];
+        [btns addObject:btn];
     }
-    
     
     [self.view addSubview:self.webView];
     [self.view addSubview:self.toolView];
@@ -63,15 +68,12 @@
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     swipe.delegate = self;
     [self.view addGestureRecognizer:swipe];
-    
-    
 }
 
 - (void)loadData{
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在加载网页";
-    
     
     __weak typeof(self) weakSelf = self;
     [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:weakSelf.storiesId success:^(DetailsModel *detailsModel) {
@@ -87,6 +89,23 @@
 
     
     [[NetworkTool sharedNetworkTool] getDetailsInfoWithWithStoriesId:self.storiesId   success:^(DetailsInfo *infon) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            ;
+            UIButton *pop = btns[2];
+            pop.badgeValue = [NSString stringWithFormat:@"%@",infon.popularity];
+            pop.badgeBGColor = [UIColor clearColor];
+            pop.badgeTextColor = [UIColor grayColor];
+            pop.badgeOriginX = 30;
+            
+            UIButton *com = btns[4];
+            com.badgeValue = [NSString stringWithFormat:@"%@",infon.popularity];
+            com.badgeBGColor = [UIColor clearColor];
+            com.badgeTextColor = [UIColor grayColor];
+            com.badgeOriginX = 30;
+            com.badgeOriginY = -0.5;
+            
+            com.badgeValue = [NSString stringWithFormat:@"%@",infon.comments];
+        });
         
     } failure:^{
         nil;
@@ -165,7 +184,6 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
-    
 }
 
 - (void)didReceiveMemoryWarning {

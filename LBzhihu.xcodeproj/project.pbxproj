@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2B0336B11B974E56008A22A0 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B01B974E56008A22A0 /* Reveal.framework */; };
 		2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B21B974E67008A22A0 /* libz.dylib */; };
+		2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */; };
 		2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6606611B9A99F300D87BD9 /* DetailsInfo.m */; };
 		2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */; };
 		2B66A6531B997B57002A5AA5 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66A6521B997B57002A5AA5 /* Public.m */; };
@@ -51,6 +52,8 @@
 /* Begin PBXFileReference section */
 		2B0336B01B974E56008A22A0 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		2B0336B21B974E67008A22A0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Badge.h"; path = "Othere/UIButton+Badge.h"; sourceTree = "<group>"; };
+		2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Badge.m"; path = "Othere/UIButton+Badge.m"; sourceTree = "<group>"; };
 		2B6606601B9A99F300D87BD9 /* DetailsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsInfo.h; sourceTree = "<group>"; };
 		2B6606611B9A99F300D87BD9 /* DetailsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsInfo.m; sourceTree = "<group>"; };
 		2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "Pods/../build/Debug-iphoneos/libMBProgressHUD.a"; sourceTree = "<group>"; };
@@ -194,6 +197,8 @@
 				2B66A6521B997B57002A5AA5 /* Public.m */,
 				2B6ECB2F1B982EB600E3DD29 /* NetworkTool.h */,
 				2B6ECB301B982EB600E3DD29 /* NetworkTool.m */,
+				2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */,
+				2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -424,6 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B6ECB591B982EFE00E3DD29 /* DetailsModel.m in Sources */,
+				2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */,
 				2B6ECB381B982EC300E3DD29 /* DetailsController.m in Sources */,
 				2B6ECB321B982EB600E3DD29 /* NetworkTool.m in Sources */,
 				2B6ECB471B982ED200E3DD29 /* StoriesCell.m in Sources */,
