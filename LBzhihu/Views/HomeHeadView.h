@@ -11,9 +11,8 @@
 
 @interface HomeHeadView : UIView
 
-@property (nonatomic,strong) UIImageView *leftImageView;
+@property (nonatomic,strong) UIButton *leftBtn;
 @property (nonatomic,strong) UIButton *titleBtn;
-@property (nonatomic,strong) UIButton *rightBtn;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 

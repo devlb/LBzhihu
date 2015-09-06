@@ -16,11 +16,12 @@
 #import "UIImageView+WebCache.h"
 #import <MJRefresh.h>
 
-@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
+@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,TapImageViewDelegate>
 {
     NSMutableArray *storieArr;
     NSMutableArray *themeArr;
     NSMutableArray *homeDataArr;
+    NSMutableArray *topStoriesArr;
     UITapGestureRecognizer *tapHome;
     UIView *containerView;//用来作为TopView和pageControl的共同父View
     int curPage;
@@ -54,8 +55,8 @@
     self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 20, MAINSIZE.width, 44)];
    
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
-    [self.headView.titleBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
-    [self.headView.rightBtn setImage:[UIImage imageNamed:@"icon.bundle/Menu_Icon_Setting@2x.png"] forState:(UIControlStateNormal)];
+    [self.headView.leftBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
+
    
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, TOPVIEWH)];
     
@@ -67,7 +68,8 @@
     pageControl.frame = CGRectMake( 100, CGRectGetMaxY(self.topView.frame) -  20, 120, 20);
     pageControl.currentPage = 0;
     self.topView.pageControl = pageControl;
-
+    self.topView.tapDelegate = self;
+    
     containerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
     [containerView addSubview:self.topView];
     [containerView addSubview:pageControl];
@@ -84,9 +86,8 @@
     [self.mainView addSubview:self.tableView];
     [self.view addSubview:self.mainView];
     
-    self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.8 *CGRectGetWidth(self.view.frame) , 20, 0.8 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
+    self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.7 *CGRectGetWidth(self.view.frame) , 20, 0.7 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
     self.leftView.headImgView.image = [UIImage imageNamed:@"头像.png"];
-    self.leftView.userNameLabel.text = @"用户";
     [self.leftView.homeBtn addTarget:self action:@selector(goHome) forControlEvents:(UIControlEventTouchDragInside)];
     
     UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
@@ -112,6 +113,7 @@
 
 - (void)getTodayData{
     storieArr = [NSMutableArray array];
+    topStoriesArr = [NSMutableArray array];
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在加载";
@@ -120,10 +122,12 @@
     [[NetworkTool sharedNetworkTool] getTodayStoriesWhensuccess:^(ContentList *contentList) {
         storieArr = contentList.stories.mutableCopy;
          homeDataArr = storieArr.mutableCopy;
-        NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
+        topStoriesArr = contentList.top_stories.mutableCopy;
+        
+//        NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
-            [weakSelf.topView setStories:topStories];
+            [weakSelf.topView setStories:topStoriesArr];
             [weakSelf.tableView reloadData];
         });
         
@@ -214,6 +218,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:idfentifier];
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
         ThemeItm *itm = themeArr[indexPath.row];
         cell.textLabel.text = itm.name;
         return cell;
@@ -236,9 +241,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-        StoriesItm *itm = storieArr[indexPath.row];
+        
         DetailsController *detailsVC = [[DetailsController alloc] init];
-        detailsVC.storiesId = itm.storiesId;
+        detailsVC.storieArr = storieArr.mutableCopy;
+        detailsVC.curIndex = indexPath.row;
+        
         [self.navigationController pushViewController:detailsVC animated:YES];
     }else{//leftViewTableView
         [UIView animateWithDuration:0.3 animations:^{
@@ -350,6 +357,16 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
     return YES;
+}
+
+#pragma mark TapImageViewDelegate
+
+- (void)tapImageView:(UIImageView *)imageView{
+    int index = imageView.tag - TOPVIEWIMGTAG;
+    DetailsController *detailsVC = [[DetailsController alloc] init];
+    detailsVC.storieArr = topStoriesArr;
+    detailsVC.curIndex = index;
+    [self.navigationController pushViewController:detailsVC animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

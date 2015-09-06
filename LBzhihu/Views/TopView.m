@@ -21,6 +21,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if ( self = [super initWithFrame:frame]) {
         self.pagingEnabled = YES;
+        self.delegate = self;
         page = 0;
        // [self addUIWithFrame:frame];
     }
@@ -40,6 +41,8 @@
         NSString *imgUrlString = itm.image;
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * imgW, 0, imgW, CGRectGetHeight(self.frame))];
         [imageView  sd_setImageWithURL:[NSURL URLWithString:imgUrlString] placeholderImage:[UIImage imageNamed:@"Image_Preview@2x.png"]];
+        imageView.userInteractionEnabled = YES;
+        imageView.tag = TOPVIEWIMGTAG + i;
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(edge,TOPVIEWH - 2 * edge - 60, imgW - 2 * edge, 30)];
         titleLabel.backgroundColor = [UIColor clearColor];
@@ -51,6 +54,10 @@
         [titleLabel sizeToFit];
         [imageView addSubview:titleLabel];
         [self addSubview:imageView];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageView:)];
+        tap.delegate = self;
+        [imageView addGestureRecognizer:tap];
     }
     
     pageControl.currentPage = 0;
@@ -62,6 +69,19 @@
     CGFloat x = page * self.frame.size.width;
     self.contentOffset = CGPointMake(x, 0);
     pageControl.currentPage = page;
+}
+
+- (void)tapImageView:(UITapGestureRecognizer *)tap{
+    [self.tapDelegate tapImageView:(UIImageView *)tap.view];
+}
+
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    CGFloat pageWidth = scrollView.frame.size.width;
+    int p = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    page = p;
+    pageControl.currentPage = p;
 }
 
 @end

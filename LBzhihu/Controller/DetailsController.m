@@ -41,7 +41,7 @@
     self.toolView.translatesAutoresizingMaskIntoConstraints = NO;
     
     btns = [NSMutableArray array];
-    NSArray *names = @[@"back",@"down",@"like",@"share",@"comments"];
+    NSArray *names = @[@"back",@"next",@"like",@"share",@"comments"];
     NSArray *imgs = @[@"Comment_Icon_Back@2x.png",@"News_Navigation_Next_Highlight@2x.png",@"News_Navigation_Vote@2x.png",@"News_Navigation_Share@2x.png",@"News_Navigation_Comment@2x.png"];
     
    
@@ -75,8 +75,10 @@
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = @"正在加载网页";
     
+    StoriesItm *itm = self.storieArr[self.curIndex];
+    
     __weak typeof(self) weakSelf = self;
-    [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:weakSelf.storiesId success:^(DetailsModel *detailsModel) {
+    [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:itm.storiesId success:^(DetailsModel *detailsModel) {
       
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
@@ -88,7 +90,7 @@
     }];
 
     
-    [[NetworkTool sharedNetworkTool] getDetailsInfoWithWithStoriesId:self.storiesId   success:^(DetailsInfo *infon) {
+    [[NetworkTool sharedNetworkTool] getDetailsInfoWithWithStoriesId:itm.storiesId   success:^(DetailsInfo *infon) {
         dispatch_async(dispatch_get_main_queue(), ^{
             ;
             UIButton *pop = btns[2];
@@ -131,7 +133,7 @@
     [htmlString appendFormat:@"<body>"];
 
     if (model.image.length > 0) {
-        [htmlString appendFormat:@"<div><img class=""avatarT"" src=""%@""><p class=""bgwz"">绘画和摄影的区别在哪里？有绘画基础的人上手摄影会不会很快？</p></div>",model.image];
+        [htmlString appendFormat:@"<div><img class=""avatarT"" src=""%@""><p class=""bgwz"">%@</p></div>",model.image,model.title];
     }
     
     [htmlString appendFormat:@"%@",model.body];
@@ -165,8 +167,12 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-- (void)down{
-    NSLog(@"向下");
+- (void)next{
+    self.curIndex ++;
+    if (self.curIndex >= self.storieArr.count) {
+        return;
+    }
+    [self loadData];
 }
 
 - (void)like{

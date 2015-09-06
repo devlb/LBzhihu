@@ -10,6 +10,8 @@
 
 @interface DetailsController : UIViewController
 
-@property (nonatomic,strong) NSString *storiesId;
+//@property (nonatomic,strong) NSString *storiesId;
+@property (nonatomic,strong) NSMutableArray *storieArr;
+@property (nonatomic,assign) int curIndex;
 
 @end

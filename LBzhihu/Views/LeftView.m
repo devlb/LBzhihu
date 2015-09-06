@@ -20,16 +20,18 @@
 - (void)addViewWithFrame:(CGRect)frame{
     CGFloat edge = 8;
     CGFloat imgW = 30;
-    CGFloat labelW = 90;
+    CGFloat labelW = 100;
 
     self.headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(frame), LEFTHEADVIEWH)];
-    self.headView.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
+    self.headView.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
     
     self.headImgView = [[UIImageView alloc] initWithFrame:CGRectMake(edge, edge, imgW, imgW)];
     self.headImgView.layer.masksToBounds =YES;
     self.headImgView.layer.cornerRadius =imgW / 2.0;
+    self.headImgView.image = [UIImage imageNamed:@"头像.png"];
     
     self.userNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(2 *edge + CGRectGetWidth(self.headImgView.frame), edge, labelW, imgW)];
+    self.userNameLabel.text = @"请登录";
     self.userNameLabel.adjustsFontSizeToFitWidth = YES;
     [self.userNameLabel setTextColor:[UIColor whiteColor]];
     
@@ -53,6 +55,7 @@
     self.homeBtn = [[UIButton alloc] initWithFrame:CGRectMake(edge, 0, labelW, LEFTHOMEVIEWH)];
     self.homeBtn.backgroundColor = [UIColor clearColor];
     [self.homeBtn setTitle:@"首页" forState:(UIControlStateNormal)];
+    [self.homeBtn setImage:[UIImage imageNamed:@"icon.bundle/Menu_Icon_Home@2x.png"] forState:(UIControlStateNormal)];
     [self.homeBtn setTitleColor:HOMEHEADBACKGROUNDCOLOR forState:(UIControlStateNormal)];
     [self.homeView addSubview:self.homeBtn];
 
@@ -60,6 +63,7 @@
     self.tableView.accessibilityNavigationStyle = UITableViewCellAccessoryDisclosureIndicator;
     self.tableView.tableHeaderView = self.homeView;
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
     
     [self addSubview:self.headView];
     [self addSubview:self.tableView];

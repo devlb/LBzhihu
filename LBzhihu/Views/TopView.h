@@ -11,9 +11,16 @@
 #import "StoriesItm.h"
 #import "NetworkTool.h"
 
-@interface TopView : UIScrollView
+@protocol TapImageViewDelegate <NSObject>
+
+- (void)tapImageView:(UIImageView *)imageView;
+
+@end
+
+@interface TopView : UIScrollView<UIGestureRecognizerDelegate,UIScrollViewDelegate>
 
 @property (nonatomic,strong)  UIPageControl *pageControl;
+@property  id <TapImageViewDelegate> tapDelegate;
 
 - (instancetype)initWithFrame:(CGRect)frame;
 
