@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B0336B11B974E56008A22A0 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B01B974E56008A22A0 /* Reveal.framework */; };
-		2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0336B21B974E67008A22A0 /* libz.dylib */; };
 		2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */; };
-		2B4B84951B9AB6D60099FDDA /* 头像.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B4B84941B9AB6D60099FDDA /* 头像.png */; };
 		2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6606611B9A99F300D87BD9 /* DetailsInfo.m */; };
 		2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */; };
 		2B66A6531B997B57002A5AA5 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66A6521B997B57002A5AA5 /* Public.m */; };
@@ -52,10 +49,8 @@
 
 /* Begin PBXFileReference section */
 		2B0336B01B974E56008A22A0 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
-		2B0336B21B974E67008A22A0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Badge.h"; path = "Othere/UIButton+Badge.h"; sourceTree = "<group>"; };
 		2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Badge.m"; path = "Othere/UIButton+Badge.m"; sourceTree = "<group>"; };
-		2B4B84941B9AB6D60099FDDA /* 头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "头像.png"; sourceTree = "<group>"; };
 		2B6606601B9A99F300D87BD9 /* DetailsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsInfo.h; sourceTree = "<group>"; };
 		2B6606611B9A99F300D87BD9 /* DetailsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsInfo.m; sourceTree = "<group>"; };
 		2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "Pods/../build/Debug-iphoneos/libMBProgressHUD.a"; sourceTree = "<group>"; };
@@ -117,8 +112,6 @@
 				2BDE042F1B99A3AB00913B3A /* libMJRefresh.a in Frameworks */,
 				2B66A6551B997EA2002A5AA5 /* libSDWebImage.a in Frameworks */,
 				2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */,
-				2B0336B31B974E67008A22A0 /* libz.dylib in Frameworks */,
-				2B0336B11B974E56008A22A0 /* Reveal.framework in Frameworks */,
 				5E27AA14E00A841F19FA6F56 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,7 +192,6 @@
 		2B03366A1B972160008A22A0 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				2B4B84941B9AB6D60099FDDA /* 头像.png */,
 				2B66A6581B99986B002A5AA5 /* icon.bundle */,
 				2B66A6521B997B57002A5AA5 /* Public.m */,
 				2B6ECB2F1B982EB600E3DD29 /* NetworkTool.h */,
@@ -228,7 +220,6 @@
 		2BDAB2791B972088000ADE68 = {
 			isa = PBXGroup;
 			children = (
-				2B0336B21B974E67008A22A0 /* libz.dylib */,
 				2BDAB2841B972088000ADE68 /* LBzhihu */,
 				2BDAB29E1B972088000ADE68 /* LBzhihuTests */,
 				2BDAB2831B972088000ADE68 /* Products */,
@@ -350,6 +341,7 @@
 				TargetAttributes = {
 					2BDAB2811B972088000ADE68 = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = K6ZRY2Q4AZ;
 					};
 					2BDAB29A1B972088000ADE68 = {
 						CreatedOnToolsVersion = 6.4;
@@ -381,7 +373,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B4B84951B9AB6D60099FDDA /* 头像.png in Resources */,
 				2B66A6591B99986B002A5AA5 /* icon.bundle in Resources */,
 				2BDAB2911B972088000ADE68 /* Main.storyboard in Resources */,
 				2BDAB2961B972088000ADE68 /* LaunchScreen.xib in Resources */,
@@ -583,6 +574,7 @@
 			baseConfigurationReference = B67BD3748431F132A66D08F7 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LBzhihu",
@@ -603,6 +595,7 @@
 			baseConfigurationReference = DB23DBB086DD58D327D9B1F0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LBzhihu",

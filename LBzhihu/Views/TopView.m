@@ -62,6 +62,8 @@
     
     pageControl.currentPage = 0;
     timer = [NSTimer scheduledTimerWithTimeInterval:2.5 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)nextImage{
@@ -72,7 +74,8 @@
 }
 
 - (void)tapImageView:(UITapGestureRecognizer *)tap{
-    [self.tapDelegate tapImageView:(UIImageView *)tap.view];
+    __weak typeof(self) weakSelf = self;
+    [weakSelf.tapDelegate tapImageView:(UIImageView *)tap.view];
 }
 
 #pragma mark UIScrollViewDelegate

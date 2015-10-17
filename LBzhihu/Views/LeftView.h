@@ -12,11 +12,6 @@
 
 @interface LeftView : UIView
 
-@property (nonatomic,strong) UIView *headView;
-@property (nonatomic,strong) UIImageView *headImgView;
-@property (nonatomic,strong) UILabel *userNameLabel;
-@property (nonatomic,strong) UIButton *favoriteBtn;
-@property (nonatomic,strong) UIButton *downBtn;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) UIView *homeView;
 @property (nonatomic,strong) UIButton *homeBtn;

@@ -87,8 +87,8 @@
     [self.view addSubview:self.mainView];
     
     self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.7 *CGRectGetWidth(self.view.frame) , 20, 0.7 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
-    self.leftView.headImgView.image = [UIImage imageNamed:@"头像.png"];
-    [self.leftView.homeBtn addTarget:self action:@selector(goHome) forControlEvents:(UIControlEventTouchDragInside)];
+   
+    [self.leftView.homeBtn addTarget:self action:@selector(goHome) forControlEvents:(UIControlEventTouchUpInside)];
     
     UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
     ontap.delegate = self;
@@ -266,7 +266,7 @@
 }
 
 
-#define 左视图
+#pragma mark 左视图
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
@@ -281,8 +281,11 @@
 }
 
 - (void)goLeftView{
-    self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-    self.mainView.alpha = 0.6;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
+        self.mainView.alpha = 0.6;
+    }];
+    
    // self.mainView.userInteractionEnabled = NO;
     
     [self addTapHome];
@@ -301,10 +304,13 @@
 
 - (void)tapHome{
     NSLog(@"首页");
-    self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-    self.mainView.alpha = 1;
-    [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
-   
+    [UIView animateWithDuration:0.3 animations:^{
+        self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
+        self.mainView.alpha = 1;
+        [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
+
+    }];
+    
     if (curThemeId == -1) {
         self.tableView.tableHeaderView = containerView;
     }else{
