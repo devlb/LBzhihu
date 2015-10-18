@@ -18,6 +18,7 @@
 }
 
 - (void)addViewWithFrame:(CGRect)frame{
+    
     CGFloat edge = 8;
     CGFloat btnW = 130;
     
@@ -38,6 +39,15 @@
     self.tableView.tableFooterView = [UIView new];
     self.tableView.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
     
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    
+    UIVisualEffectView *effectview = [[UIVisualEffectView alloc] initWithEffect:blur];
+    
+    effectview.frame = self.tableView.frame;
+    [effectview addSubview:self.tableView];
+//    
+//    [self addSubview:effectview];
     [self addSubview:self.tableView];
 }
 

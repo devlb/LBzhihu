@@ -16,7 +16,7 @@
 #import "UIImageView+WebCache.h"
 #import <MJRefresh.h>
 
-@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,TapImageViewDelegate>
+@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,TapImageViewDelegate>
 {
     NSMutableArray *storieArr;
     NSMutableArray *themeArr;
@@ -43,6 +43,7 @@
     
     curPage = 0;
     curThemeId = -1;
+
     homeDataArr = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
     [self addUI];
@@ -52,13 +53,12 @@
 
 - (void)addUI{
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 20, MAINSIZE.width, 44)];
+    self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 44)];
    
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
     [self.headView.leftBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
-
-   
-    self.topView = [[TopView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, TOPVIEWH)];
+    
+    self.topView = [[TopView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, TOPVIEWH)];
     
     UIPageControl *pageControl = [[UIPageControl alloc]init];
    /// pageControl.backgroundColor = [UIColor redColor];
@@ -70,20 +70,22 @@
     self.topView.pageControl = pageControl;
     self.topView.tapDelegate = self;
     
-    containerView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, TOPVIEWH)];
+    containerView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, TOPVIEWH)];
     [containerView addSubview:self.topView];
     [containerView addSubview:pageControl];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain)];
     self.tableView.tableHeaderView = containerView;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
     self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     self.tableView.footer.automaticallyChangeAlpha = YES;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     
+   [self.mainView addSubview:self.tableView];
     [self.mainView addSubview:self.headView];
-    [self.mainView addSubview:self.tableView];
+    
     [self.view addSubview:self.mainView];
     
     self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.7 *CGRectGetWidth(self.view.frame) , 20, 0.7 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
@@ -219,6 +221,7 @@
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
+        
         ThemeItm *itm = themeArr[indexPath.row];
         cell.textLabel.text = itm.name;
         return cell;
@@ -284,6 +287,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
         self.mainView.alpha = 0.6;
+        
     }];
     
    // self.mainView.userInteractionEnabled = NO;
@@ -368,7 +372,7 @@
 #pragma mark TapImageViewDelegate
 
 - (void)tapImageView:(UIImageView *)imageView{
-    int index = imageView.tag - TOPVIEWIMGTAG;
+    int index = (int)imageView.tag - TOPVIEWIMGTAG;
     DetailsController *detailsVC = [[DetailsController alloc] init];
     detailsVC.storieArr = topStoriesArr;
     detailsVC.curIndex = index;
@@ -378,6 +382,16 @@
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBarHidden = YES;
     
+}
+
+
+//改变顶部的headview颜色
+-( void )scrollViewDidScroll:( UIScrollView *)scrollView {
+    CGFloat offsetY = scrollView.contentOffset.y;
+    if (offsetY >= 44 || offsetY <= -44) {
+        return;
+    }
+    self.headView.alpha = offsetY / 44.0 ;
 }
 
 - (void)didReceiveMemoryWarning {

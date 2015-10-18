@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */; };
+		2B6444821BD2908700190281 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6444811BD2908700190281 /* Reveal.framework */; settings = {ASSET_TAGS = (); }; };
+		2B6444841BD2909F00190281 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6444831BD2909F00190281 /* libz.tbd */; };
 		2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6606611B9A99F300D87BD9 /* DetailsInfo.m */; };
 		2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */; };
 		2B66A6531B997B57002A5AA5 /* Public.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B66A6521B997B57002A5AA5 /* Public.m */; };
@@ -48,9 +50,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2B0336B01B974E56008A22A0 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Badge.h"; path = "Othere/UIButton+Badge.h"; sourceTree = "<group>"; };
 		2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Badge.m"; path = "Othere/UIButton+Badge.m"; sourceTree = "<group>"; };
+		2B6444811BD2908700190281 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		2B6444831BD2909F00190281 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		2B6606601B9A99F300D87BD9 /* DetailsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsInfo.h; sourceTree = "<group>"; };
 		2B6606611B9A99F300D87BD9 /* DetailsInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailsInfo.m; sourceTree = "<group>"; };
 		2B66A64E1B997797002A5AA5 /* libMBProgressHUD.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMBProgressHUD.a; path = "Pods/../build/Debug-iphoneos/libMBProgressHUD.a"; sourceTree = "<group>"; };
@@ -109,8 +112,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B6444841BD2909F00190281 /* libz.tbd in Frameworks */,
 				2BDE042F1B99A3AB00913B3A /* libMJRefresh.a in Frameworks */,
 				2B66A6551B997EA2002A5AA5 /* libSDWebImage.a in Frameworks */,
+				2B6444821BD2908700190281 /* Reveal.framework in Frameworks */,
 				2B66A64F1B997797002A5AA5 /* libMBProgressHUD.a in Frameworks */,
 				5E27AA14E00A841F19FA6F56 /* libPods.a in Frameworks */,
 			);
@@ -129,6 +134,7 @@
 		03B35840B8B27C1E51912D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B6444831BD2909F00190281 /* libz.tbd */,
 				2BCB672C1B9ACBA40046E417 /* libpop.a */,
 				2BCB672A1B9ACA840046E417 /* libpop.a */,
 				2BDE042E1B99A3AB00913B3A /* libMJRefresh.a */,
@@ -220,6 +226,7 @@
 		2BDAB2791B972088000ADE68 = {
 			isa = PBXGroup;
 			children = (
+				2B6444811BD2908700190281 /* Reveal.framework */,
 				2BDAB2841B972088000ADE68 /* LBzhihu */,
 				2BDAB29E1B972088000ADE68 /* LBzhihuTests */,
 				2BDAB2831B972088000ADE68 /* Products */,
@@ -257,7 +264,6 @@
 		2BDAB2851B972088000ADE68 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				2B0336B01B974E56008A22A0 /* Reveal.framework */,
 				2BDAB2861B972088000ADE68 /* Info.plist */,
 				2BDAB2871B972088000ADE68 /* main.m */,
 			);
@@ -575,9 +581,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LBzhihu",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = LBzhihu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -596,9 +604,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LBzhihu",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = LBzhihu/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -9,12 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <MBProgressHUD.h>
 
-
 #pragma mark colour
 
 
 #define HOMEHEADBACKGROUNDCOLOR [UIColor colorWithRed:0/255.0 green:191/255.0 blue:255/255.0 alpha:1]
+
+
 #define LEFTVIEWBACKGROUNDCOLOR [UIColor colorWithRed:139/255.0 green:139/255.0 blue:131/255.0 alpha:1]
+
+//[UIColor clearColor]
 
 #pragma mark height
 
@@ -22,7 +25,7 @@
 #define HOMEHEADHEIGHT 44
 #define IMAGEANDTITLEVIEWHEIGHT 200
 #define STORIESCELLH 100
-#define TOPVIEWH 190
+#define TOPVIEWH 220
 #define DETAILTOOLVIEWH 30
 
 #define LEFTHEADVIEWH 80
