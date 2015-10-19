@@ -74,7 +74,7 @@
     [containerView addSubview:self.topView];
     [containerView addSubview:pageControl];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, MAINSIZE.height - CGRectGetMaxY(self.headView.frame)) style:(UITableViewStylePlain)];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, MAINSIZE.height) style:(UITableViewStylePlain)];
     self.tableView.tableHeaderView = containerView;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

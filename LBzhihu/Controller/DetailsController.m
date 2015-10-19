@@ -11,6 +11,8 @@
 //#import "PubilcMember.m"
 #import <MBProgressHUD.h>
 #import "UIButton+Badge.h"
+#import "DetailsController.m"
+#import "CommentsController.h"
 
 @interface DetailsController ()<UIWebViewDelegate,UIGestureRecognizerDelegate>
 {
@@ -18,6 +20,7 @@
 }
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) UIView *toolView;
+@property (nonatomic,strong) MBProgressHUD *hud;
 
 @end
 
@@ -33,6 +36,7 @@
 - (void)addUI{
     self.view.backgroundColor = [UIColor whiteColor];
     self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, MAINSIZE.height - DETAILTOOLVIEWH)];
+    self.webView.backgroundColor = [UIColor clearColor];
     self.webView.scrollView.bounces = YES;
     self.webView.delegate = self;
     
@@ -72,8 +76,8 @@
 
 - (void)loadData{
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"正在加载网页";
+   self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    self.hud.labelText = @"正在加载网页";
     
     StoriesItm *itm = self.storieArr[self.curIndex];
     
@@ -81,7 +85,7 @@
     [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:itm.storiesId success:^(DetailsModel *detailsModel) {
       
         dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hide:YES];
+            
             [weakSelf showInWebViewWithDetailsModel:detailsModel];
         });
         
@@ -126,12 +130,11 @@
         [htmlString appendFormat:@" rel=""stylesheet"" type=""text/css"">"];
     }
     
+    [htmlString appendFormat:@"<style>.avatarT {width:100%%;height:200px; position:absolute; min-width:320px;} .bgwz {position:absolute; color:#fff; margin:150px 15px 0 15px; min-width:290px; font-size:1em;}</style>"];
     
-        [htmlString appendFormat:@"<style>.avatarT {width:100%;height:200px; position:absolute; min-width:320px;} .bgwz {position:absolute; color:#fff; margin:150px 15px 0 15px; min-width:290px; font-size:1em;}</style>"];
-
     
     [htmlString appendFormat:@"<body>"];
-
+    
     if (model.image.length > 0) {
         [htmlString appendFormat:@"<div><img class=""avatarT"" src=""%@""><p class=""bgwz"">%@</p></div>",model.image,model.title];
     }
@@ -153,6 +156,10 @@
     [self.webView loadHTMLString:htmlString baseURL:nil];
 }
 
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    [self.hud hide:YES];
+}
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
@@ -186,6 +193,11 @@
 - (void)comments{
 
     NSLog(@"评论");
+    StoriesItm *itm = self.storieArr[self.curIndex];
+    
+    CommentsController *commentVC = [CommentsController new];
+    commentVC.storiesId = itm.storiesId;
+    [self.navigationController pushViewController:commentVC animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated{

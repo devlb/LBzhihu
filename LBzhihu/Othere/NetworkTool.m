@@ -60,6 +60,19 @@ static NetworkTool *tool;
 }
 
 
+//评论
+
+- (void)getLongComments:(NSString *)storieId success:(void (^)(CommentsModel *))success failure:(void (^)())failure{
+    NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/story/%@/long-comments",storieId];
+    [self getDataWithUrlString:urlStr WithClass:[CommentsModel class] success:success failure:failure];
+}
+
+- (void)getShortComments:(NSString *)storieId success:(void (^)(CommentsModel *))success failure:(void (^)())failure{
+    NSString *urlStr = [NSString stringWithFormat:@"http://news-at.zhihu.com/api/4/story/%@/short-comments",storieId];
+    [self getDataWithUrlString:urlStr WithClass:[CommentsModel class] success:success failure:failure];
+}
+
+
 - (void)getDataWithUrlString:(NSString *)urlString WithClass:(Class)className success:(void (^)(id data))success failure:(void (^)())failure{
 
     NSURL *url = [NSURL URLWithString:urlString];

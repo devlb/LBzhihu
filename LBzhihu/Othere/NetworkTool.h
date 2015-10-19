@@ -15,6 +15,7 @@
 #import "DetailsModel.h"
 #import "Public.m"
 #import "DetailsInfo.h"
+#import "CommentsModel.h"
 
 @interface NetworkTool : NSObject
 
@@ -31,5 +32,9 @@
 - (void)getStoriesListWithStorieId :(NSString *)storieId success:(void (^)(ContentList *contentList))success failure:(void (^)())failure;
 
 - (void)getDetailsInfoWithWithStoriesId:(NSString *)storiesId success:(void(^)(DetailsInfo *infon))success failure:(void (^)())failure;
+
+- (void)getLongComments:(NSString *)storieId success:(void (^)(CommentsModel *commentsModel))success failure:(void (^)())failure;
+
+- (void)getShortComments:(NSString *)storieId success:(void (^)(CommentsModel *commentsModel))success failure:(void (^)())failure;
 
 @end
