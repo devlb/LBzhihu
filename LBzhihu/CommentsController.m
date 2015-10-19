@@ -58,16 +58,16 @@
         [[[UIAlertView alloc] initWithTitle:@"获取评论失败" message:@"请稍后再试" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil] show];
     }];
     
-//    [[NetworkTool sharedNetworkTool] getShortComments:self.storiesId success:^(CommentsModel *commentsModel) {
-//        [data replaceObjectAtIndex:1 withObject:commentsModel.comments];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.tableView reloadData];
-//        });
-//        
-//    } failure:^{
-//        [[[UIAlertView alloc] initWithTitle:@"获取评论失败" message:@"请稍后再试" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil] show];
-//    }];
+    [[NetworkTool sharedNetworkTool] getShortComments:self.storiesId success:^(CommentsModel *commentsModel) {
+        [data replaceObjectAtIndex:1 withObject:commentsModel.comments];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    } failure:^{
+        [[[UIAlertView alloc] initWithTitle:@"获取评论失败" message:@"请稍后再试" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:nil] show];
+    }];
 
 }
 
@@ -99,13 +99,18 @@
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 44)];
+    label.text = (section == 0) ? @"长评论" : @"短评论";
+    return label;
+}
+
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([heightArr[0] count] > 0 || [heightArr[1] count] > 0) {
-        NSMutableArray *arr = heightArr[indexPath.section];
+     NSMutableArray *arr = heightArr[indexPath.section];
+    if ([arr count] > 0) {
         NSNumber *num = arr[indexPath.row];
         return [num floatValue];
-    
     }
     return 0.0;
 }
