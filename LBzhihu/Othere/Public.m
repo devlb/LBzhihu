@@ -30,7 +30,7 @@
 
 #define LEFTHEADVIEWH 80
 #define LEFTHOMEVIEWH 40
-
+#define LEFTVIEWW (MAINSIZE.width * 0.6)
 #pragma mark tag
 
 #define HOMELEFTTABLEVIEWTAG 80

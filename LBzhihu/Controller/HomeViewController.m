@@ -9,30 +9,35 @@
 #import "HomeViewController.h"
 #import "HomeHeadView.h"
 #import "NetworkTool.h"
+#import "UIView+frame.h"
 #import "StoriesCell.h"
 #import "TopView.h"
 #import "DetailsController.h"
-#import "LeftView.h"
+//#import "LeftView.h"
+#import "LeftViewController.h"
 #import "UIImageView+WebCache.h"
 #import <MJRefresh.h>
 
-@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,TapImageViewDelegate>
+@interface HomeViewController ()<UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate,UIScrollViewDelegate,TapImageViewDelegate,SelectThemeDelegate>
 {
     NSMutableArray *storieArr;
-    NSMutableArray *themeArr;
+//    NSMutableArray *themeArr;
     NSMutableArray *homeDataArr;
     NSMutableArray *topStoriesArr;
     UITapGestureRecognizer *tapHome;
     UIView *containerView;//用来作为TopView和pageControl的共同父View
     int curPage;
-    int curThemeId; /*<话题id，首页-1*/
+    NSInteger curThemeId; /*<话题id，首页-1*/
+    CGRect leftViewLeftFrame;//左视图在左边时位置
+    CGRect leftViewRightFrame;//左视图在右边时位置
 }
 
 @property (nonatomic,strong) UIView *mainView;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) TopView *topView;
 @property (nonatomic,strong) HomeHeadView *headView;
-@property (nonatomic,strong) LeftView *leftView;
+@property (nonatomic,strong) LeftViewController *leftVC;
+//@property (nonatomic,strong) LeftView *leftView;
 
 @end
 
@@ -43,7 +48,9 @@
     
     curPage = 0;
     curThemeId = -1;
-
+    leftViewLeftFrame = CGRectMake(- MAINSIZE.width , 0, LEFTVIEWW, MAINSIZE.height);
+    leftViewRightFrame = CGRectMake(self.view.x,self.view.y, self.view.width, self.view.height);
+    
     homeDataArr = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
     [self addUI];
@@ -56,7 +63,7 @@
     self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 44)];
    
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
-    [self.headView.leftBtn addTarget:self action:@selector(goLeftView) forControlEvents:(UIControlEventTouchUpInside)];
+    [self.headView.leftBtn addTarget:self action:@selector(showLeftView) forControlEvents:(UIControlEventTouchUpInside)];
     
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, TOPVIEWH)];
     
@@ -83,24 +90,15 @@
     self.tableView.footer.automaticallyChangeAlpha = YES;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     
-   [self.mainView addSubview:self.tableView];
+    [self.mainView addSubview:self.tableView];
     [self.mainView addSubview:self.headView];
-    
     [self.view addSubview:self.mainView];
     
-    self.leftView = [[LeftView alloc] initWithFrame:CGRectMake(- 0.7 *CGRectGetWidth(self.view.frame) , 20, 0.7 *CGRectGetWidth(self.view.frame), MAINSIZE.height - 20)];
-   
-    [self.leftView.homeBtn addTarget:self action:@selector(goHome) forControlEvents:(UIControlEventTouchUpInside)];
-    
-    UITapGestureRecognizer *ontap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
-    ontap.delegate = self;
-    [self.leftView.homeView addGestureRecognizer:ontap];
-    
-    self.leftView.tableView.delegate = self;
-    self.leftView.tableView.dataSource = self;
-    self.leftView.tableView.tag = HOMELEFTTABLEVIEWTAG;
-    
-    [self.view addSubview:self.leftView];
+    self.leftVC = [[LeftViewController alloc] init];
+    self.leftVC.themDelegate = self;
+    self.leftVC.view.frame = leftViewLeftFrame;
+    [self.mainView addSubview:self.leftVC.view];
+    [self addChildViewController:self.leftVC];
     
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     swipe.delegate = self;
@@ -109,10 +107,16 @@
 
 
 - (void)loadMoreData{
-    [self loadHomeData];
-    
+    if (curThemeId == -1) {
+        [self loadHomeData];
+    }else{
+        [self loadMoreTypeData];
+    }
 }
 
+#pragma mark 数据加载
+
+// 今日的首页内容
 - (void)getTodayData{
     storieArr = [NSMutableArray array];
     topStoriesArr = [NSMutableArray array];
@@ -126,7 +130,6 @@
          homeDataArr = storieArr.mutableCopy;
         topStoriesArr = contentList.top_stories.mutableCopy;
         
-//        NSMutableArray *topStories = [NSMutableArray arrayWithArray:contentList.top_stories];
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
             [weakSelf.topView setStories:topStoriesArr];
@@ -137,20 +140,9 @@
         [[[UIAlertView alloc] initWithTitle:@"获取内容失败" message:@"获取内容失败，请检查网络" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定",nil] show];
     }];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[NetworkTool sharedNetworkTool] getThemeTypeWhensuccess:^(ThemeType *themeType) {
-            themeArr = themeType.others.mutableCopy;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.leftView.tableView reloadData];
-            });
-            
-        } failure:^{
-            [[[UIAlertView alloc] initWithTitle:@"获取失败" message:@"获取话题列表,请检查网络" delegate:nil cancelButtonTitle:@"取消 " otherButtonTitles:@"确定", nil] show];
-        }];
-    });
-
 }
 
+//
 - (void)loadHomeData{
     NSDate *date = [[NSDate date] initWithTimeInterval:- 24 *60 * 60 * curPage sinceDate:[NSDate date]];;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -180,158 +172,8 @@
     }];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-         return storieArr.count;
-    }else{
-        return themeArr.count;
-    }
-   
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-        static NSString *identifier = @"storiesCell";
-        StoriesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-        if (cell == nil) {
-            cell = [[StoriesCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:identifier];
-        }
-        if (!storieArr.count > 0) {
-            return cell;
-        }
-        StoriesItm *itm = storieArr[indexPath.row];
-        cell.textLabel.text = itm.title;
-        if (itm.images.count > 0) {
-             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[itm.images firstObject]] placeholderImage:[UIImage imageNamed:@"icon.bundle/Image_Preview@2x.png"]];
-        }else{
-            cell.imageView.image = nil;
-        }
-        
-        return cell;
-    }else{//leftViewTable
-        
-        static NSString *idfentifier = @"leftCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idfentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:idfentifier];
-        }
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
-        
-        ThemeItm *itm = themeArr[indexPath.row];
-        cell.textLabel.text = itm.name;
-        return cell;
-    }
-}
-
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-        return STORIESCELLH;
-    }else{
-        return 44;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 0.1;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
-        
-        DetailsController *detailsVC = [[DetailsController alloc] init];
-        detailsVC.storieArr = storieArr.mutableCopy;
-        detailsVC.curIndex = indexPath.row;
-        
-        [self.navigationController pushViewController:detailsVC animated:YES];
-    }else{//leftViewTableView
-        [UIView animateWithDuration:0.3 animations:^{
-            self.leftView.frame = CGRectMake(-  CGRectGetWidth(self.leftView.frame) , 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-            self.mainView.alpha = 1;
-            
-        }];
-       // self.mainView.userInteractionEnabled = YES;
-        [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
-        self.tableView.tableHeaderView = [UIView new];
-        [self.mainView removeGestureRecognizer:tapHome];
-        ThemeItm *itm = themeArr[indexPath.row];
-        [self.headView.titleBtn setTitle:itm.name forState:(UIControlStateNormal)];
-        curThemeId = [itm.themeId intValue];
-        storieArr = [NSMutableArray array];
-        [self loadTypeDataWithStorieId:itm.themeId];
-    }
-}
-
-
-#pragma mark 左视图
-
-- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
-    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        [UIView animateWithDuration:0.5 animations:^{
-            self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-            self.mainView.alpha = 0.6;
-        }];
-        
-        // self.mainView.userInteractionEnabled = NO;
-        [self addTapHome];
-    }
-}
-
-- (void)goLeftView{
-    [UIView animateWithDuration:0.3 animations:^{
-        self.leftView.frame = CGRectMake(0, 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-        self.mainView.alpha = 0.6;
-        
-    }];
-    
-   // self.mainView.userInteractionEnabled = NO;
-    
-    [self addTapHome];
-}
-
-- (void)addTapHome{
-    tapHome = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapHome)];
-    tapHome.delegate = self;
-    [self.mainView addGestureRecognizer:tapHome];
-}
-
-- (void)goHome{
-    curThemeId = -1;
-    [self tapHome];
-}
-
-- (void)tapHome{
-    NSLog(@"首页");
-    [UIView animateWithDuration:0.3 animations:^{
-        self.leftView.frame = CGRectMake(- CGRectGetWidth(self.leftView.frame), 20, CGRectGetWidth(self.leftView.frame), CGRectGetHeight(self.leftView.frame));
-        self.mainView.alpha = 1;
-        [self.tableView setContentOffset:CGPointMake(0,0) animated:YES];
-
-    }];
-    
-    if (curThemeId == -1) {
-        self.tableView.tableHeaderView = containerView;
-    }else{
-        self.tableView.tableHeaderView = [UIView new];
-    }
-    
-   // self.mainView.userInteractionEnabled = YES;
-    [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
-   [self.mainView removeGestureRecognizer:tapHome];
-    
-    storieArr = homeDataArr;
-    [self.tableView reloadData];
-}
-
 //加载某个话题下的列表
 - (void)loadTypeDataWithStorieId:(NSString *)storieId{
-  //  storieArr = [NSMutableArray array];
     __weak  typeof(self) weakSelf = self;
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -349,21 +191,103 @@
             [hud hide:YES];
         });
         
-    weakSelf.tableView.footer = [MJRefreshAutoFooter footerWithRefreshingTarget:weakSelf refreshingAction:@selector(loadMoreTypeData)];
+        weakSelf.tableView.footer = [MJRefreshAutoFooter footerWithRefreshingTarget:weakSelf refreshingAction:@selector(loadMoreTypeData)];
         
     } failure:^{
         [[[UIAlertView alloc] initWithTitle:@"获取失败" message:@"获取列表,请检查网络" delegate:nil cancelButtonTitle:@"取消 " otherButtonTitles:@"确定", nil] show];
     }];
-
+    
 }
 
 //加载更多话题内容
 - (void)loadMoreTypeData{
     StoriesItm *itm = [storieArr lastObject];
     NSString *storieId =  itm.storiesId;
-    NSString *idString = [NSString stringWithFormat:@"%d/before/%@",curThemeId,storieId];
+    NSString *idString = [NSString stringWithFormat:@"%ld/before/%@",curThemeId,storieId];
     [self loadTypeDataWithStorieId:idString];
 }
+
+#pragma mark tableview
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return storieArr.count;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+        static NSString *identifier = @"storiesCell";
+        StoriesCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+        if (cell == nil) {
+            cell = [[StoriesCell alloc] initWithStyle:(UITableViewCellStyleDefault) reuseIdentifier:identifier];
+        }
+        if (!storieArr.count > 0) {
+            return cell;
+        }
+        StoriesItm *itm = storieArr[indexPath.row];
+        cell.textLabel.text = itm.title;
+        if (itm.images.count > 0) {
+             [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[itm.images firstObject]] placeholderImage:[UIImage imageNamed:@"icon.bundle/Image_Preview@2x.png"]];
+        }else{
+            cell.imageView.image = nil;
+        }
+        
+        return cell;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView.tag == HOMEMAINTABLEVIEWTAG) {
+        return STORIESCELLH;
+    }else{
+        return 44;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 0.1;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+        DetailsController *detailsVC = [[DetailsController alloc] init];
+        detailsVC.storieArr = storieArr.mutableCopy;
+        detailsVC.curIndex = indexPath.row;
+        
+        [self.navigationController pushViewController:detailsVC animated:YES];
+}
+
+#pragma maek 视图切换
+#pragma mark 左视图
+
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer{
+    if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
+        [self showLeftView];
+    }
+}
+
+- (void)showLeftView{
+    self.tableView.userInteractionEnabled = NO;
+    [self.leftVC.view becomeFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.leftVC.view.frame = leftViewRightFrame;
+        self.mainView.alpha = 0.6;
+        self.headView.alpha = 1;
+    }];
+}
+
+- (void)showMainView{
+    self.tableView.userInteractionEnabled = YES;
+    [self.leftVC.view becomeFirstResponder];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.leftVC.view.frame = leftViewLeftFrame;
+        self.mainView.alpha = 1;
+    }];
+
+}
+
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch{
     return YES;
@@ -384,7 +308,6 @@
     
 }
 
-
 //改变顶部的headview颜色
 -( void )scrollViewDidScroll:( UIScrollView *)scrollView {
     CGFloat offsetY = scrollView.contentOffset.y;
@@ -392,6 +315,30 @@
         return;
     }
     self.headView.alpha = offsetY / 44.0 ;
+}
+
+
+- (void)selectThemeIdWithThemeId:(NSString *)themeId headViewTitle:(NSString *)headViewTitle{
+    [self showMainView];
+    NSInteger intThemeId = [themeId intValue];
+    if(intThemeId == curThemeId){
+        return;
+    }
+    storieArr = [NSMutableArray array];
+    curThemeId = intThemeId;
+    [self.tableView setContentOffset:CGPointMake(0,0) animated:NO];
+    [self.headView.titleBtn setTitle:headViewTitle forState:(UIControlStateNormal)];
+    
+    if(intThemeId == -1){
+        [self loadHomeData];
+        
+        self.tableView.tableHeaderView = containerView;
+        return;
+    }
+    
+    self.tableView.tableHeaderView = [UIView new];
+   
+    [self loadTypeDataWithStorieId:themeId];
 }
 
 - (void)didReceiveMemoryWarning {

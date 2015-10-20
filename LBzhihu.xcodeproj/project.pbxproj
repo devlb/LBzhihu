@@ -31,7 +31,6 @@
 		2B6ECB391B982EC300E3DD29 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB371B982EC300E3DD29 /* HomeViewController.m */; };
 		2B6ECB441B982ED200E3DD29 /* HomeHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB3B1B982ED200E3DD29 /* HomeHeadView.m */; };
 		2B6ECB451B982ED200E3DD29 /* ImageAndTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB3D1B982ED200E3DD29 /* ImageAndTitleView.m */; };
-		2B6ECB461B982ED200E3DD29 /* LeftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB3F1B982ED200E3DD29 /* LeftView.m */; };
 		2B6ECB471B982ED200E3DD29 /* StoriesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB411B982ED200E3DD29 /* StoriesCell.m */; };
 		2B6ECB481B982ED200E3DD29 /* TopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB431B982ED200E3DD29 /* TopView.m */; };
 		2B6ECB4B1B982EE400E3DD29 /* JsonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB4A1B982EE400E3DD29 /* JsonModel.m */; };
@@ -41,6 +40,8 @@
 		2B6ECB591B982EFE00E3DD29 /* DetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB551B982EFE00E3DD29 /* DetailsModel.m */; };
 		2B6ECB5A1B982EFE00E3DD29 /* StoriesItm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */; };
 		2BA6117B1BD3E41F0038AD23 /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA6117A1BD3E41F0038AD23 /* CommentsCell.m */; settings = {ASSET_TAGS = (); }; };
+		2BB27B431BD61C3C00D31BA7 /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB27B421BD61C3C00D31BA7 /* LeftViewController.m */; settings = {ASSET_TAGS = (); }; };
+		2BB27B461BD62BC100D31BA7 /* UIView+frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB27B451BD62BC100D31BA7 /* UIView+frame.m */; settings = {ASSET_TAGS = (); }; };
 		2BBEA3F31BD5054F00085314 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEA3F21BD5054F00085314 /* libicucore.tbd */; };
 		2BBEA3F51BD5055D00085314 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEA3F41BD5055D00085314 /* libstdc++.tbd */; };
 		2BBEA3F71BD5056300085314 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BBEA3F61BD5056300085314 /* JavaScriptCore.framework */; };
@@ -105,8 +106,6 @@
 		2B6ECB3B1B982ED200E3DD29 /* HomeHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HomeHeadView.m; path = Views/HomeHeadView.m; sourceTree = "<group>"; };
 		2B6ECB3C1B982ED200E3DD29 /* ImageAndTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageAndTitleView.h; path = Views/ImageAndTitleView.h; sourceTree = "<group>"; };
 		2B6ECB3D1B982ED200E3DD29 /* ImageAndTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageAndTitleView.m; path = Views/ImageAndTitleView.m; sourceTree = "<group>"; };
-		2B6ECB3E1B982ED200E3DD29 /* LeftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeftView.h; path = Views/LeftView.h; sourceTree = "<group>"; };
-		2B6ECB3F1B982ED200E3DD29 /* LeftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LeftView.m; path = Views/LeftView.m; sourceTree = "<group>"; };
 		2B6ECB401B982ED200E3DD29 /* StoriesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StoriesCell.h; path = Views/StoriesCell.h; sourceTree = "<group>"; };
 		2B6ECB411B982ED200E3DD29 /* StoriesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StoriesCell.m; path = Views/StoriesCell.m; sourceTree = "<group>"; };
 		2B6ECB421B982ED200E3DD29 /* TopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TopView.h; path = Views/TopView.h; sourceTree = "<group>"; };
@@ -125,6 +124,11 @@
 		2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StoriesItm.m; path = "Model/内容/StoriesItm.m"; sourceTree = "<group>"; };
 		2BA611791BD3E41F0038AD23 /* CommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentsCell.h; path = Views/CommentsCell.h; sourceTree = "<group>"; };
 		2BA6117A1BD3E41F0038AD23 /* CommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentsCell.m; path = Views/CommentsCell.m; sourceTree = "<group>"; };
+		2BB27B411BD61C3C00D31BA7 /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeftViewController.h; path = Controller/LeftViewController.h; sourceTree = "<group>"; };
+		2BB27B421BD61C3C00D31BA7 /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LeftViewController.m; path = Controller/LeftViewController.m; sourceTree = "<group>"; };
+		2BB27B441BD62BC100D31BA7 /* UIView+frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+frame.h"; path = "Othere/UIView+frame.h"; sourceTree = "<group>"; };
+		2BB27B451BD62BC100D31BA7 /* UIView+frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+frame.m"; path = "Othere/UIView+frame.m"; sourceTree = "<group>"; };
+		2BBA84921BD64909007BEFE3 /* SelectThemeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SelectThemeDelegate.h; path = Othere/SelectThemeDelegate.h; sourceTree = "<group>"; };
 		2BBEA3F21BD5054F00085314 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		2BBEA3F41BD5055D00085314 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		2BBEA3F61BD5056300085314 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -216,6 +220,8 @@
 				2B6ECB371B982EC300E3DD29 /* HomeViewController.m */,
 				2BBF22B31BD3782A00DD391C /* CommentsController.h */,
 				2BBF22B41BD3782A00DD391C /* CommentsController.m */,
+				2BB27B411BD61C3C00D31BA7 /* LeftViewController.h */,
+				2BB27B421BD61C3C00D31BA7 /* LeftViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -249,8 +255,6 @@
 				2B6ECB3B1B982ED200E3DD29 /* HomeHeadView.m */,
 				2B6ECB3C1B982ED200E3DD29 /* ImageAndTitleView.h */,
 				2B6ECB3D1B982ED200E3DD29 /* ImageAndTitleView.m */,
-				2B6ECB3E1B982ED200E3DD29 /* LeftView.h */,
-				2B6ECB3F1B982ED200E3DD29 /* LeftView.m */,
 				2B6ECB401B982ED200E3DD29 /* StoriesCell.h */,
 				2B6ECB411B982ED200E3DD29 /* StoriesCell.m */,
 				2B6ECB421B982ED200E3DD29 /* TopView.h */,
@@ -267,10 +271,13 @@
 				2BBEA3FE1BD506DF00085314 /* share */,
 				2B66A6581B99986B002A5AA5 /* icon.bundle */,
 				2B66A6521B997B57002A5AA5 /* Public.m */,
+				2BB27B441BD62BC100D31BA7 /* UIView+frame.h */,
+				2BB27B451BD62BC100D31BA7 /* UIView+frame.m */,
 				2B6ECB2F1B982EB600E3DD29 /* NetworkTool.h */,
 				2B6ECB301B982EB600E3DD29 /* NetworkTool.m */,
 				2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */,
 				2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */,
+				2BBA84921BD64909007BEFE3 /* SelectThemeDelegate.h */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -559,7 +566,7 @@
 				2B6ECB471B982ED200E3DD29 /* StoriesCell.m in Sources */,
 				2BDAB28B1B972088000ADE68 /* AppDelegate.m in Sources */,
 				2B6ECB451B982ED200E3DD29 /* ImageAndTitleView.m in Sources */,
-				2B6ECB461B982ED200E3DD29 /* LeftView.m in Sources */,
+				2BB27B461BD62BC100D31BA7 /* UIView+frame.m in Sources */,
 				2B66A6531B997B57002A5AA5 /* Public.m in Sources */,
 				2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */,
 				2B6ECB581B982EFE00E3DD29 /* ContentList.m in Sources */,
@@ -568,6 +575,7 @@
 				2B6ECB441B982ED200E3DD29 /* HomeHeadView.m in Sources */,
 				2BBF22C01BD37F3000DD391C /* CommentsItm.m in Sources */,
 				2B6ECB5A1B982EFE00E3DD29 /* StoriesItm.m in Sources */,
+				2BB27B431BD61C3C00D31BA7 /* LeftViewController.m in Sources */,
 				2B6ECB511B982EF300E3DD29 /* ThemeType.m in Sources */,
 				2B6ECB4B1B982EE400E3DD29 /* JsonModel.m in Sources */,
 				2B6ECB391B982EC300E3DD29 /* HomeViewController.m in Sources */,

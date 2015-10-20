@@ -17,6 +17,7 @@
 #import "DetailsInfo.h"
 #import "CommentsModel.h"
 #import "ShareModel.h"
+#import "SelectThemeDelegate.h"
 
 @interface NetworkTool : NSObject
 
