@@ -21,4 +21,14 @@
     NSLog(@"%@没找到:key:%@  value:%@",[self class],key,value);
 }
 
+-(id)copyWithZone:(NSZone *)zone{
+    id jm = [[[self class] allocWithZone:zone] init];
+    return jm;
+}
+
+- (id)mutableCopyWithZone:(NSZone *)zone{
+
+    return [self copyWithZone:zone];
+}
+
 @end

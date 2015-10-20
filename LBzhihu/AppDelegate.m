@@ -8,7 +8,21 @@
 
 #import "AppDelegate.h"
 #import "HomeViewController.h"
+#import <ShareSDK/ShareSDK.h>
+#import "WXApi.h"
+#import <ShareSDKConnector/ShareSDKConnector.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/QQApi.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 
+
+#define SHAREAPPKEY @"a42f5c9c6808"
+#define WXAPPID @"wxf88c6046c12be3d0"
+#define WXAPPSECRET  @"70334fa07279c16949410af92b1a9b20"
+#define QQAPPID @"1104842141"
+#define QQAPPKEY @"jfylB0GELAaeKKz7"
+
+//QQAPPID转为16进制后 41DA8D9D
 @interface AppDelegate ()
 
 @end
@@ -23,8 +37,43 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
     [self.window makeKeyAndVisible];
+    
+    [self share];
     return YES;
 }
+
+- (void)share{
+    [ShareSDK registerApp:SHAREAPPKEY activePlatforms:@[@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType){
+        switch (platformType) {
+            case SSDKPlatformTypeWechat:
+                [ShareSDKConnector connectWeChat:[WXApi class]];
+            case SSDKPlatformTypeQQ:
+                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+                break;
+            default:
+                break;
+        }
+        
+    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+        switch (platformType) {
+            case SSDKPlatformSubTypeWechatSession:
+                
+            case SSDKPlatformSubTypeWechatTimeline:
+                [appInfo SSDKSetupWeChatByAppId:WXAPPID appSecret:WXAPPSECRET];
+                break;
+            case SSDKPlatformSubTypeQQFriend:
+            case SSDKPlatformSubTypeQZone:
+                
+                [appInfo SSDKSetupQQByAppId:QQAPPID appKey:QQAPPKEY authType:SSDKAuthTypeSSO];
+                break;
+            default:
+                break;
+        }
+    }];
+}
+
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

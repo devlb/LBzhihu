@@ -16,6 +16,7 @@
 #import "Public.m"
 #import "DetailsInfo.h"
 #import "CommentsModel.h"
+#import "ShareModel.h"
 
 @interface NetworkTool : NSObject
 

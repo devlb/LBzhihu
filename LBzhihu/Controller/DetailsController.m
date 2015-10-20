@@ -13,10 +13,18 @@
 #import "UIButton+Badge.h"
 #import "DetailsController.m"
 #import "CommentsController.h"
+#import <ShareSDK/ShareSDK.h>
+#import "WXApi.h"
+#import <TencentOpenAPI/QQApi.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <ShareSDKUI/ShareSDKUI.h>
 
 @interface DetailsController ()<UIWebViewDelegate,UIGestureRecognizerDelegate>
 {
     NSMutableArray *btns;
+    ShareModel *shareModel;
+    UIActivityIndicatorView *shareLoadingView;
+    UIView *sharePanelView;
 }
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic,strong) UIView *toolView;
@@ -80,13 +88,16 @@
     self.hud.labelText = @"正在加载网页";
     
     StoriesItm *itm = self.storieArr[self.curIndex];
-    
+    shareModel = [ShareModel new];
     __weak typeof(self) weakSelf = self;
-    [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:itm.storiesId success:^(DetailsModel *detailsModel) {
-      
+    [[NetworkTool sharedNetworkTool] getDetailsWithStoriesId:itm.storiesId success:^(DetailsModel *model) {
+        shareModel.title = model.title.mutableCopy;
+        shareModel.imageUrl = model.image.mutableCopy;
+        shareModel.shareUrl = model.share_url.mutableCopy;
+    
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [weakSelf showInWebViewWithDetailsModel:detailsModel];
+            [weakSelf showInWebViewWithDetailsModel:model];
         });
         
     } failure:^{
@@ -186,10 +197,94 @@
     NSLog(@"赞");
 }
 
+
+#pragma mark 分享
 - (void)share{
-    NSLog(@"分享");
+    
+    
+    BOOL b = [ShareSDK hasAuthorized:(SSDKPlatformTypeQQ)];
+    NSURL *url = [NSURL URLWithString:shareModel.shareUrl];
+    NSString *title = shareModel.title;
+    NSString *text = @"分享自@李波知乎";
+    NSArray *imgArr = @[shareModel.imageUrl]; //goodsDetail.image_url;
+    
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    [shareParams SSDKSetupShareParamsByText:text images:imgArr url:url title:title type:(SSDKContentTypeWebPage)];
+    __weak id weekSelf = self;
+    
+    [ShareSDK showShareActionSheet:self.view
+                             items:@[@(SSDKPlatformTypeWechat)]
+                       shareParams:shareParams
+               onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                   
+                   switch (state) {
+                       case SSDKResponseStateBegin:{
+                           [weekSelf showLoadingView:YES];
+                           break;
+                       }
+                       case SSDKResponseStateSuccess:{
+                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                               message:nil
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"确定"
+                                                                     otherButtonTitles:nil];
+                           [alertView show];
+                           break;
+                       }
+                       case SSDKResponseStateFail:{
+                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                               message:[NSString stringWithFormat:@"%@", error]
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"确定"
+                                                                     otherButtonTitles:nil];
+                           [alertView show];
+                           break;
+                       }
+                       case SSDKResponseStateCancel:{
+                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享已取消"
+                                                                               message:nil
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"确定"
+                                                                     otherButtonTitles:nil];
+                           [alertView show];
+                           break;
+                       }
+                       default:
+                           break;
+                   }
+                   
+               }];
+    
+    
 }
 
+- (void)showLoadingView:(BOOL)flag
+{
+    if (flag)
+    {
+        [self.view addSubview:sharePanelView];
+        [shareLoadingView startAnimating];
+    }
+    else
+    {
+        [sharePanelView removeFromSuperview];
+    }
+}
+
+- (void)addShareUI{
+    //加载等待视图
+    sharePanelView = [[UIView alloc] initWithFrame:self.view.bounds];
+    sharePanelView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    sharePanelView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.3];
+    
+    shareLoadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    shareLoadingView.frame = CGRectMake((self.view.frame.size.width - shareLoadingView.frame.size.width) / 2, (self.view.frame.size.height - shareLoadingView.frame.size.height) / 2, shareLoadingView.frame.size.width, shareLoadingView.frame.size.height);
+    shareLoadingView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
+    [sharePanelView addSubview:shareLoadingView];
+}
+
+
+#pragma mark 评论
 - (void)comments{
 
     NSLog(@"评论");

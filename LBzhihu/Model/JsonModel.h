@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface JsonModel : NSObject
+@interface JsonModel : NSObject<NSCopying,NSMutableCopying>
 
 - (instancetype)initWithDictionary:(NSDictionary *)dic;
+
+-(id)copyWithZone:(NSZone *)zone;
+
+- (id)mutableCopyWithZone:(NSZone *)zone;
 
 @end
