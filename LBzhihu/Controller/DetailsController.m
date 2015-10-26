@@ -201,12 +201,13 @@
 #pragma mark 分享
 - (void)share{
     
-    
-    BOOL b = [ShareSDK hasAuthorized:(SSDKPlatformTypeQQ)];
     NSURL *url = [NSURL URLWithString:shareModel.shareUrl];
     NSString *title = shareModel.title;
     NSString *text = @"分享自@李波知乎";
-    NSArray *imgArr = @[shareModel.imageUrl]; //goodsDetail.image_url;
+    if (shareModel.imageUrl == nil) {
+        shareModel.imageUrl = @"http://photo.163.com/devlibo/#m=2&aid=297774132&pid=9451740439";
+    }
+    NSArray *imgArr = @[shareModel.imageUrl];
     
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     [shareParams SSDKSetupShareParamsByText:text images:imgArr url:url title:title type:(SSDKContentTypeWebPage)];

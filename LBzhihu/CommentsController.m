@@ -33,7 +33,7 @@
 }
 
 - (void)addSubView{
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:(UITableViewStyleGrouped)];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:(UITableViewStylePlain)];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.allowsSelection = NO;
@@ -101,10 +101,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 44)];
+    label.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:label.font.fontName size:20];
     label.text = (section == 0) ? @"长评论" : @"短评论";
     return label;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 44;
+}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
      NSMutableArray *arr = heightArr[indexPath.section];
@@ -137,6 +144,9 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

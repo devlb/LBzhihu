@@ -37,7 +37,6 @@
 @property (nonatomic,strong) TopView *topView;
 @property (nonatomic,strong) HomeHeadView *headView;
 @property (nonatomic,strong) LeftViewController *leftVC;
-//@property (nonatomic,strong) LeftView *leftView;
 
 @end
 
@@ -96,13 +95,15 @@
     
     self.leftVC = [[LeftViewController alloc] init];
     self.leftVC.themDelegate = self;
+    self.leftVC.themeId = @"-1";
     self.leftVC.view.frame = leftViewLeftFrame;
     [self.mainView addSubview:self.leftVC.view];
     [self addChildViewController:self.leftVC];
-    
+   
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     swipe.delegate = self;
     [self.view addGestureRecognizer:swipe];
+   
 }
 
 

@@ -122,7 +122,7 @@
 - (void)goHome{
 //    self.curIndex = -1;
     self.themeId = @"-1";
-    [self.themDelegate selectThemeIdWithThemeId:self.themeId headViewTitle:self.headViewTitle];
+    [self.themDelegate selectThemeIdWithThemeId:self.themeId headViewTitle:@"首页"];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

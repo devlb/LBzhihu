@@ -724,6 +724,7 @@
 					"$(PROJECT_DIR)/LBzhihu/libraries/extends/QQSDK",
 				);
 				INFOPLIST_FILE = LBzhihu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -731,7 +732,9 @@
 					"$(PROJECT_DIR)/LBzhihu/libraries/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "-2app.top.LBzhihu";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -750,6 +753,7 @@
 					"$(PROJECT_DIR)/LBzhihu/libraries/extends/QQSDK",
 				);
 				INFOPLIST_FILE = LBzhihu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -757,7 +761,9 @@
 					"$(PROJECT_DIR)/LBzhihu/libraries/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = "-2app.top.LBzhihu";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
