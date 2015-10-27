@@ -134,6 +134,14 @@
 #pragma mark - ******************** 拼接html语言
 
 - (void)showInWebViewWithDetailsModel:(DetailsModel *)model{
+    //有些主题下不使用拼接，直接显示web
+    if(model.body == nil){
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:model.share_url]];
+        [self.webView loadRequest:request];
+        return;
+    }
+    
+    
     NSMutableString *htmlString = [NSMutableString stringWithFormat:@"<!DOCTYPE HTML><html><head><meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">"];
     [htmlString appendFormat:@"<title>%@</title></head>",model.title];
     for (NSString *cssUrlString in model.css) {
