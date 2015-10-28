@@ -42,6 +42,10 @@
     UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
     swipe.delegate = self;
     [self.view addGestureRecognizer:swipe];
+    
+    UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, 20)];
+    statusView.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
+    [self.view addSubview:statusView];
 }
 
 - (void)loadData{

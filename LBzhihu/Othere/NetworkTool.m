@@ -10,6 +10,7 @@
 
 @implementation NetworkTool
 
+
 static NetworkTool *tool;
 
 + (instancetype)sharedNetworkTool{
@@ -20,6 +21,7 @@ static NetworkTool *tool;
     });
     return tool;
 }
+
 
 - (void)getThemeTypeWhensuccess:(void (^)(ThemeType *))success failure:(void (^)())failure{
     NSString *urlStr = @"http://news-at.zhihu.com/api/4/themes";
