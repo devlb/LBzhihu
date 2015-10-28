@@ -51,11 +51,13 @@
 - (void)loadData{
     data = [NSMutableArray arrayWithObjects:[NSMutableArray array],[NSMutableArray array],nil];
     
+    __weak typeof(self) weakSelf = self;
+    
     [[NetworkTool sharedNetworkTool] getLongComments:self.storiesId success:^(CommentsModel *commentsModel) {
         [data replaceObjectAtIndex:0 withObject:commentsModel.comments];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
+            [weakSelf.tableView reloadData];
         });
         
     } failure:^{
@@ -66,7 +68,7 @@
         [data replaceObjectAtIndex:1 withObject:commentsModel.comments];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
+            [weakSelf.tableView reloadData];
         });
         
     } failure:^{

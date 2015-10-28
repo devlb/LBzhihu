@@ -8,7 +8,8 @@
 
 #import "DetailsController.h"
 #import "NetworkTool.h"
-//#import "PubilcMember.m"
+#import "UIView+frame.h"
+
 #import <MBProgressHUD.h>
 #import "UIButton+Badge.h"
 #import "DetailsController.m"
@@ -53,7 +54,7 @@
     self.toolView.translatesAutoresizingMaskIntoConstraints = NO;
     
     btns = [NSMutableArray array];
-    NSArray *names = @[@"back",@"next",@"like",@"share",@"comments"];
+    NSArray *names = @[@"back",@"next",@"like:",@"share",@"comments"];
     NSArray *imgs = @[@"Comment_Icon_Back@2x.png",@"News_Navigation_Next_Highlight@2x.png",@"News_Navigation_Vote@2x.png",@"News_Navigation_Share@2x.png",@"News_Navigation_Comment@2x.png"];
     
    
@@ -201,9 +202,51 @@
     [self loadData];
 }
 
-- (void)like{
+- (void)like:(UIButton *)sender{
     NSLog(@"赞");
+    CGFloat imgW = 90;
+    CGFloat imgH = 30;
+    UIButton *pop = btns[2];
+    
+    NSArray *imgs = @[@"icon.bundle/News_Navigation_Vote@2x.png",@"icon.bundle/News_Navigation_Voted@2x.png"];
+    sender.selected = !sender.selected;
+    if (!sender.selected) {
+        [sender setImage:[UIImage imageNamed:imgs[0]] forState:(UIControlStateNormal)];
+        pop.badgeValue = [NSString stringWithFormat:@"%d",[pop.badgeValue intValue] - 1];
+        return;
+    }
+    
+    [sender setImage:[UIImage imageNamed:imgs[1]] forState:(UIControlStateNormal)];
+    pop.badgeValue = [NSString stringWithFormat:@"%d",[pop.badgeValue intValue] + 1];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(sender.x, MAINSIZE.height - imgH, imgW, imgH)];
+    imageView.image = [UIImage imageNamed:@"icon.bundle/News_Number_Bg@2x.png"];
+    imageView.tag = LIKEIMAGEVIETAG;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, imageView.width, imageView.height - 10)];
+    label.text = pop.badgeValue;
+    label.textColor = [UIColor whiteColor];
+    label.textAlignment = NSTextAlignmentCenter;
+
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        imageView.y = self.toolView.y - imgH;
+        label.text = [NSString stringWithFormat:@"%d",[label.text intValue]];
+    }];
+    
+    
+    [imageView addSubview:label];
+    [self.view addSubview:imageView];
+    
+    [self performSelector:@selector(removeImageView) withObject:nil afterDelay:0.5];
 }
+
+- (void)removeImageView{
+    UIImageView *imgView = [self.view viewWithTag:LIKEIMAGEVIETAG];
+    [imgView removeFromSuperview];
+}
+
+
 
 
 #pragma mark 分享

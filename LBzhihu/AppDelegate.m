@@ -15,7 +15,6 @@
 #import <TencentOpenAPI/QQApi.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 
-
 #define SHAREAPPKEY @"a42f5c9c6808"
 #define WXAPPID @"wxf88c6046c12be3d0"
 #define WXAPPSECRET  @"70334fa07279c16949410af92b1a9b20"
@@ -32,11 +31,30 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    CGRect rect = [[UIScreen mainScreen] bounds];
+    self.window = [[UIWindow alloc] initWithFrame:rect];
+    
+    UIImageView *splashView=[[UIImageView alloc] initWithFrame:rect];
+    
+    //将图片添加到UIImageView对象中
+    splashView.image=[UIImage imageNamed:@"icon.bundle/Default.jpg"];
+    [self.window addSubview:splashView];
+    [self.window bringSubviewToFront:splashView];
+    
+    //设置动画效果
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:3.0];
+    [UIView setAnimationDelegate:self];
+    splashView.alpha=0.0;
+    splashView.frame=CGRectMake(-60, -90, 440, 700);
+    [UIView commitAnimations];
+    
+    
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
-    [self.window makeKeyAndVisible];
+  //  [self.window makeKeyAndVisible];
     
     [self share];
     return YES;

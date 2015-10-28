@@ -85,6 +85,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.tag = HOMEMAINTABLEVIEWTAG;
+    
     self.tableView.footer = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(loadMoreData)];
     self.tableView.footer.automaticallyChangeAlpha = YES;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
