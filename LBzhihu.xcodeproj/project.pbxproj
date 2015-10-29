@@ -20,6 +20,7 @@
 		2B3F13F21BD53BB800A34AE3 /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2B3F13EF1BD53BB800A34AE3 /* ShareSDK.bundle */; };
 		2B3F13F31BD53BB800A34AE3 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B3F13F01BD53BB800A34AE3 /* ShareSDK.framework */; };
 		2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */; };
+		2B54E7601BE202B5004BD512 /* EditCommentsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B54E75F1BE202B5004BD512 /* EditCommentsController.m */; };
 		2B6444821BD2908700190281 /* Reveal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6444811BD2908700190281 /* Reveal.framework */; };
 		2B6444841BD2909F00190281 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B6444831BD2909F00190281 /* libz.tbd */; };
 		2B6606621B9A99F300D87BD9 /* DetailsInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6606611B9A99F300D87BD9 /* DetailsInfo.m */; };
@@ -90,6 +91,8 @@
 		2B3F13F01BD53BB800A34AE3 /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShareSDK.framework; path = libraries/ShareSDK.framework; sourceTree = "<group>"; };
 		2B4B84911B9AA8E20099FDDA /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIButton+Badge.h"; path = "Othere/UIButton+Badge.h"; sourceTree = "<group>"; };
 		2B4B84921B9AA8E20099FDDA /* UIButton+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIButton+Badge.m"; path = "Othere/UIButton+Badge.m"; sourceTree = "<group>"; };
+		2B54E75E1BE202B5004BD512 /* EditCommentsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCommentsController.h; sourceTree = "<group>"; };
+		2B54E75F1BE202B5004BD512 /* EditCommentsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCommentsController.m; sourceTree = "<group>"; };
 		2B6444811BD2908700190281 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		2B6444831BD2909F00190281 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		2B6606601B9A99F300D87BD9 /* DetailsInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailsInfo.h; sourceTree = "<group>"; };
@@ -216,14 +219,16 @@
 		2B0336511B972105008A22A0 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				2B6ECB341B982EC300E3DD29 /* DetailsController.h */,
-				2B6ECB351B982EC300E3DD29 /* DetailsController.m */,
 				2B6ECB361B982EC300E3DD29 /* HomeViewController.h */,
 				2B6ECB371B982EC300E3DD29 /* HomeViewController.m */,
-				2BBF22B31BD3782A00DD391C /* CommentsController.h */,
-				2BBF22B41BD3782A00DD391C /* CommentsController.m */,
 				2BB27B411BD61C3C00D31BA7 /* LeftViewController.h */,
 				2BB27B421BD61C3C00D31BA7 /* LeftViewController.m */,
+				2B6ECB341B982EC300E3DD29 /* DetailsController.h */,
+				2B6ECB351B982EC300E3DD29 /* DetailsController.m */,
+				2BBF22B31BD3782A00DD391C /* CommentsController.h */,
+				2BBF22B41BD3782A00DD391C /* CommentsController.m */,
+				2B54E75E1BE202B5004BD512 /* EditCommentsController.h */,
+				2B54E75F1BE202B5004BD512 /* EditCommentsController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -564,6 +569,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B6ECB591B982EFE00E3DD29 /* DetailsModel.m in Sources */,
+				2B54E7601BE202B5004BD512 /* EditCommentsController.m in Sources */,
 				2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */,
 				2B6ECB381B982EC300E3DD29 /* DetailsController.m in Sources */,
 				2B6ECB321B982EB600E3DD29 /* NetworkTool.m in Sources */,

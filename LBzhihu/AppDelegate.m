@@ -35,28 +35,31 @@
     CGRect rect = [[UIScreen mainScreen] bounds];
     self.window = [[UIWindow alloc] initWithFrame:rect];
     
-    UIImageView *splashView=[[UIImageView alloc] initWithFrame:rect];
+//    UIImageView *splashView=[[UIImageView alloc] initWithFrame:rect];
+//    
+//    //将图片添加到UIImageView对象中
+//    splashView.image=[UIImage imageNamed:@"icon.bundle/Default.jpg"];
+//    [self.window addSubview:splashView];
+//    [self.window bringSubviewToFront:splashView];
+//    
+//    //设置动画效果
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:3.0];
+//    [UIView setAnimationDelegate:self];
+//    splashView.alpha=0.0;
+//    splashView.frame=CGRectMake(-60, -90, 440, 700);
+//    [UIView commitAnimations];
     
-    //将图片添加到UIImageView对象中
-    splashView.image=[UIImage imageNamed:@"icon.bundle/Default.jpg"];
-    [self.window addSubview:splashView];
-    [self.window bringSubviewToFront:splashView];
-    
-    //设置动画效果
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:3.0];
-    [UIView setAnimationDelegate:self];
-    splashView.alpha=0.0;
-    splashView.frame=CGRectMake(-60, -90, 440, 700);
-    [UIView commitAnimations];
-    
+    [self share];
     
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
-  //  [self.window makeKeyAndVisible];
+    self.window.tintColor = [UIColor colorWithRed:139/255.0 green:139/255.0 blue:131/255.0 alpha:1];
     
-    [self share];
+    [self.window makeKeyAndVisible];
+    
+   
     return YES;
 }
 

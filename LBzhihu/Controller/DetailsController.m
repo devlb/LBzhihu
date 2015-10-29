@@ -177,7 +177,7 @@
 }
 
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
+- (void)webViewDidStartLoad:(UIWebView *)webView{
     [self.hud hide:YES];
 }
 
@@ -264,6 +264,10 @@
     [shareParams SSDKSetupShareParamsByText:text images:imgArr url:url title:title type:(SSDKContentTypeWebPage)];
     __weak id weekSelf = self;
     
+    if ([ShareSDK hasAuthorized:(SSDKPlatformTypeWechat)]) {
+        NSLog(@"微信已授权");
+    } ;
+    
     [ShareSDK showShareActionSheet:self.view
                              items:@[@(SSDKPlatformTypeWechat)]
                        shareParams:shareParams
@@ -312,15 +316,13 @@
 
 - (void)showLoadingView:(BOOL)flag
 {
-    if (flag)
-    {
+    if (flag) {
         [self.view addSubview:sharePanelView];
         [shareLoadingView startAnimating];
+        return;
     }
-    else
-    {
-        [sharePanelView removeFromSuperview];
-    }
+    
+    [sharePanelView removeFromSuperview];
 }
 
 - (void)addShareUI{

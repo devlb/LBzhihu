@@ -24,8 +24,8 @@
     CGFloat edge = 8;
     CGFloat userLabelW = 120;
     CGFloat userLabelH = 30;
-    CGFloat numberW = 30;
-    CGFloat likeBtnW = 30;
+    CGFloat likeBtnW = 70;
+    CGFloat likeBtnH = 40;
 
     self.imgView =  [[UIImageView alloc] initWithFrame:CGRectMake(edge, edge, COMMENTSCELLIMGW, COMMENTSCELLIMGW)];
     self.imgView.layer.masksToBounds = YES;
@@ -36,14 +36,9 @@
     self.userLbael.backgroundColor = [UIColor clearColor];
     [self.userLbael setTextColor:[UIColor blackColor]];
     
-    CGFloat likeNumberX = MAINSIZE.width - numberW - edge;
-    self.likeNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(likeNumberX, edge, numberW, userLabelH)];
-    self.likeNumberLabel.backgroundColor = [UIColor clearColor];
-    [self.likeNumberLabel setTextColor:[UIColor grayColor]];
-    self.likeNumberLabel.adjustsFontSizeToFitWidth = YES;
+    self.likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(MAINSIZE.width - likeBtnW, edge, likeBtnW, likeBtnH)];
+    self.likeBtn.titleLabel.textAlignment = NSTextAlignmentRight;
     
-    self.likeBtn = [[UIButton alloc] initWithFrame:CGRectMake(likeNumberX  - likeBtnW, edge, likeBtnW, likeBtnW)];
-
     self.contentLabel = [[UILabel alloc] init];
     self.contentLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1];
     
@@ -53,7 +48,6 @@
     [self addSubview:self.imgView];
     [self addSubview:self.userLbael];
     [self addSubview:self.likeBtn];
-    [self addSubview:self.likeNumberLabel];
     [self addSubview:self.contentLabel];
     [self addSubview:self.timeLabel];
 }

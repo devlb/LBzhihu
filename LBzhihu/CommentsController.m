@@ -10,6 +10,8 @@
 #import "NetworkTool.h"
 #import "UIImageView+WebCache.h"
 #import "CommentsCell.h"
+#import "UIView+frame.h"
+#import "EditCommentsController.h"
 
 @interface CommentsController ()<UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate>
 {
@@ -18,6 +20,7 @@
 }
 
 @property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic,strong) UIView *toolView;
 
 @end
 
@@ -33,19 +36,45 @@
 }
 
 - (void)addSubView{
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:(UITableViewStylePlain)];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    self.tableView.allowsSelection = NO;
-    [self.view addSubview:self.tableView];
-
-    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
-    swipe.delegate = self;
-    [self.view addGestureRecognizer:swipe];
+    CGFloat toolH = 40;
+    CGFloat backBtnW = 40;
+    CGFloat editBtnW = 70;
     
     UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, 20)];
     statusView.backgroundColor = HOMEHEADBACKGROUNDCOLOR;
+
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, MAINSIZE.height - toolH) style:(UITableViewStylePlain)];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.allowsSelection = NO;
+   
+    self.toolView = [[UIView alloc] initWithFrame:CGRectMake(0, MAINSIZE.height - toolH, MAINSIZE.width, toolH)];
+    self.toolView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+    
+    
+    UIButton *backBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, backBtnW, self.toolView.height)];
+    [backBtn setImage:[UIImage imageNamed:@"icon.bundle/Comment_Icon_Back@2x.png"] forState:(UIControlStateNormal)];
+    [backBtn addTarget:self action:@selector(back) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    UIButton *editBtn = [[UIButton alloc] initWithFrame:CGRectMake((MAINSIZE.width - editBtnW) / 2, 0, editBtnW, self.toolView.height)];
+  
+    [editBtn setTitle:@"写评论" forState:(UIControlStateNormal)];
+    [editBtn setImage:[UIImage imageNamed:@"icon.bundle/Comment_Icon_Compose_Highlight@2x.png"] forState:(UIControlStateNormal)];
+    [editBtn addTarget:self action:@selector(editComments:) forControlEvents:(UIControlEventTouchUpInside)];
+    
+    [self.toolView addSubview:backBtn];
+    [self.toolView addSubview:editBtn];
+    
     [self.view addSubview:statusView];
+    [self.view addSubview:self.tableView];
+    [self.view addSubview:self.toolView];
+    
+    UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+    swipe.delegate = self;
+    [self.view addGestureRecognizer:swipe];
+
+    
 }
 
 - (void)loadData{
@@ -93,11 +122,18 @@
         cell = [[CommentsCell alloc] initWithStyle:(UITableViewCellStyleValue1) reuseIdentifier:@"cell"];
     }
     cell.userLbael.text = itm.author;
-    cell.likeNumberLabel.text = [NSString stringWithFormat:@"%@",itm.likes];
-    [cell.likeBtn setImage:[UIImage imageNamed:@"icon.bundle/Comment_Vote.png"] forState:(UIControlStateNormal)];
+
+    [cell.likeBtn setTitle:[NSString stringWithFormat:@"%@",itm.likes] forState:(UIControlStateNormal)];
+    [cell.likeBtn setTitleColor:[UIColor grayColor] forState:(UIControlStateNormal)];
+    
+    [cell.likeBtn setImage:[UIImage imageNamed:@"icon.bundle/Comment_Vote@2x.png"] forState:(UIControlStateNormal)];
+    
     [cell.likeBtn addTarget:self action:@selector(like:) forControlEvents:(UIControlEventTouchUpInside)];
+    
     [cell.imgView sd_setImageWithURL:[NSURL URLWithString:itm.avatar] placeholderImage:[UIImage imageNamed:@"icon.bundle/Account_Avatar@2x.png"]];
+    
     [cell setTextLabelText:itm.content];
+    
     cell.timeLabel.text = [self sectionStrByCreateTime:[itm.time floatValue]];
     
     [heightArr[indexPath.section] addObject:@(cell.frame.size.height)];
@@ -139,20 +175,46 @@
     return [formatter stringFromDate:date];
 }
 
-- (void)like:(UIButton *)btn{
-    NSArray *imgs = @[[UIImage imageNamed:@"icon.bundle/Comment_Vote.png"],[UIImage imageNamed:@"icon.bundle/Comment_Voted@2x.png"]];
-    UIImage *image = [btn.imageView.image isEqual:imgs[0]] ? imgs[1] : imgs[0];
-    [btn setImage:image forState:(UIControlStateNormal)];
+- (void)like:(UIButton *)sender{
+    sender.selected = !sender.selected;
+    NSArray *imgs = @[
+                      [UIImage imageNamed:@"icon.bundle/Comment_Vote@2x.png"],
+                      [UIImage imageNamed:@"icon.bundle/Comment_Voted@2x.png"]
+                      ];
+    NSArray *titles = @[
+                        [NSString stringWithFormat:@"%d",[sender.titleLabel.text intValue] - 1],
+                        [NSString stringWithFormat:@"%d",[sender.titleLabel.text intValue] + 1]
+                        ];
+    
+   if(!sender.selected) {
+        [sender setImage:imgs[0] forState:(UIControlStateNormal)];
+        [sender setTitle:titles[0] forState:(UIControlStateNormal)];
+    }else{
+        [sender setImage:imgs[1] forState:(UIControlStateNormal)];
+         [sender setTitle:titles[1] forState:(UIControlStateNormal)];
+    }
+    
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)recognizer{
     if (recognizer.direction == UISwipeGestureRecognizerDirectionRight) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self back];
     }
 }
 
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
+- (void)editComments:(UIButton *)sender{
+    EditCommentsController *editCommentVC = [[EditCommentsController alloc] init];
+    [self.navigationController pushViewController:editCommentVC animated:YES];
+}
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = YES;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

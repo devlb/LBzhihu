@@ -305,10 +305,7 @@
     [self.navigationController pushViewController:detailsVC animated:YES];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    self.navigationController.navigationBarHidden = YES;
-    
-}
+
 
 //改变顶部的headview颜色
 -( void )scrollViewDidScroll:( UIScrollView *)scrollView {
@@ -341,6 +338,11 @@
     self.tableView.tableHeaderView = [UIView new];
    
     [self loadTypeDataWithStorieId:themeId];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

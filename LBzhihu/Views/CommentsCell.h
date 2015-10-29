@@ -14,7 +14,6 @@
 @property (nonatomic,strong) UIImageView *imgView;
 @property (nonatomic,strong) UILabel *userLbael;
 @property (nonatomic,strong) UIButton *likeBtn;
-@property (nonatomic,strong) UILabel *likeNumberLabel;
 @property (nonatomic,strong) UILabel *contentLabel;
 @property (nonatomic,strong) UILabel *timeLabel;
 
