@@ -271,6 +271,7 @@
 }
 
 - (void)showLeftView{
+    
     self.tableView.userInteractionEnabled = NO;
     [self.leftVC.view becomeFirstResponder];
     [UIView animateWithDuration:0.3 animations:^{

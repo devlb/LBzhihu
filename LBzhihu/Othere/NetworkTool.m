@@ -9,7 +9,9 @@
 #import "NetworkTool.h"
 
 @implementation NetworkTool
-
+{
+    NSDate *lastDate;
+}
 
 static NetworkTool *tool;
 
@@ -26,6 +28,12 @@ static NetworkTool *tool;
 - (void)getThemeTypeWhensuccess:(void (^)(ThemeType *))success failure:(void (^)())failure{
     NSString *urlStr = @"http://news-at.zhihu.com/api/4/themes";
     
+
+    lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"lastDate"];
+    if (!lastDate) {
+        lastDate = [NSDate date];
+    }
+   
     [self getDataWithUrlString:urlStr WithClass:[ThemeType class] success:success failure:failure];
 }
 
@@ -78,7 +86,21 @@ static NetworkTool *tool;
 - (void)getDataWithUrlString:(NSString *)urlString WithClass:(Class)className success:(void (^)(id data))success failure:(void (^)())failure{
 
     NSURL *url = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:15];
+    //如果是栏目列表，使用缓存
+    if ([urlString isEqualToString: @"http://news-at.zhihu.com/api/4/themes"]) {
+        request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
+
+        //大于等于7天,清除缓存
+        if([lastDate timeIntervalSinceNow] <= -7 * 24 * 60 * 60){
+            NSURLCache *cache = [NSURLCache sharedURLCache];
+            [cache removeCachedResponseForRequest:request];
+        }else{
+            lastDate = [NSDate date];
+            [[NSUserDefaults standardUserDefaults] setObject:lastDate forKey:@"lastDate"];
+        }
+    }
+    
     
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (connectionError) {

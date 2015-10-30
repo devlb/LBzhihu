@@ -56,12 +56,11 @@
     [self.tapView addGestureRecognizer:tap];
     [self.view addSubview:self.tapView];
     
-//    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-//    
-//    UIVisualEffectView *effectview = [[UIVisualEffectView alloc] initWithEffect:blur];
-//    
-//    effectview.frame = self.tableView.frame;
-//    [effectview addSubview:self.tableView];
+    //添加毛玻璃效果
+    UIBlurEffect * blurEffect=[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    UIVisualEffectView * blureffectView=[[UIVisualEffectView alloc]initWithEffect:blurEffect];
+    blureffectView.frame= CGRectMake(0, 0,LEFTVIEWW, MAINSIZE.height);
+    [self.view addSubview:blureffectView];
 
     [self.view addSubview:self.tableView];
     
@@ -101,11 +100,12 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.backgroundColor = LEFTVIEWBACKGROUNDCOLOR;
-    
+   
     ThemeItm *itm = themeArr[indexPath.row];
     cell.textLabel.text = itm.name;
     return cell;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
