@@ -7,6 +7,7 @@
 //
 
 #import "StartViewController.h"
+#import "HomeViewController.h"
 
 @interface StartViewController ()<UIScrollViewDelegate>
 {
@@ -15,7 +16,6 @@
 
 @property (strong,nonatomic) UIScrollView *scrollView;
 @property (strong,nonatomic) UIPageControl *pageControl;
-@property (strong,nonatomic) UIButton *beginBtn;
 
 
 @end
@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    imgs = @[@"icon.bundle/start1.png",@"icon.bundle/start2.png"];
+    imgs = @[@"icon.bundle/start1.png",@"icon.bundle/start2.png",@"icon.bundle/start3.png"];
     
     [self addUI];
 }
@@ -33,11 +33,12 @@
 
 - (void)addUI{
     CGFloat width = CGRectGetWidth(self.view.frame);
-    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, width, CGRectGetHeight(self.view.frame) + 0.1)];
     self.scrollView.contentSize = CGSizeMake(width * imgs.count, CGRectGetHeight(self.view.frame)) ;
     self.scrollView.pagingEnabled = YES;
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.delegate = self;
+    self.scrollView.bounces = NO;
     
     int i = 0;
     for (NSString *imageName in imgs) {
@@ -46,16 +47,7 @@
         i ++;
         [self.scrollView addSubview:imageView];
         
-        if (i == imgs.count - 1) {
-            
-            self.beginBtn = [[UIButton alloc] initWithFrame:CGRectMake(i * CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame) - 40, CGRectGetWidth(self.view.frame), 40)];
-            [self.beginBtn setTitle:@"开始" forState:(UIControlStateNormal)];
-            [self.beginBtn setTitleColor:[UIColor redColor] forState:(UIControlStateNormal)];
-            [self.beginBtn addTarget:self action:@selector(goMainView) forControlEvents:(UIControlEventTouchUpInside)];
-            [imageView addSubview:self.beginBtn];
-        }
     }
-    
     
     self.pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(width * 0.2, CGRectGetHeight(self.view.frame) * 0.8, width * 0.6, 40)];
     self.pageControl.numberOfPages = imgs.count;
@@ -73,9 +65,21 @@
     self.pageControl.currentPage = offsetX / self.view.frame.size.width;
 }
 
-- (void)goMainView{
-    NSLog(@"ddd");
-    
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    if(scrollView.contentOffset.x >= self.view.frame.size.width * (imgs.count - 1)){
+        HomeViewController *homeVC = [HomeViewController new];
+        [self.navigationController pushViewController:homeVC animated:YES];
+        NSMutableArray *vcs = self.navigationController.viewControllers.mutableCopy;
+        [vcs removeObjectAtIndex:0];
+        self.navigationController.viewControllers = vcs.mutableCopy;
+    }
+   
+}
+
+//最后一张图跳转到主视图
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)didReceiveMemoryWarning {

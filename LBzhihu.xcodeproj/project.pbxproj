@@ -41,6 +41,7 @@
 		2B6ECB581B982EFE00E3DD29 /* ContentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB531B982EFE00E3DD29 /* ContentList.m */; };
 		2B6ECB591B982EFE00E3DD29 /* DetailsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB551B982EFE00E3DD29 /* DetailsModel.m */; };
 		2B6ECB5A1B982EFE00E3DD29 /* StoriesItm.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */; };
+		2B976BE61BE8913E003E3605 /* StartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B976BE51BE8913E003E3605 /* StartViewController.m */; };
 		2BA6117B1BD3E41F0038AD23 /* CommentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA6117A1BD3E41F0038AD23 /* CommentsCell.m */; };
 		2BB27B431BD61C3C00D31BA7 /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB27B421BD61C3C00D31BA7 /* LeftViewController.m */; };
 		2BB27B461BD62BC100D31BA7 /* UIView+frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB27B451BD62BC100D31BA7 /* UIView+frame.m */; };
@@ -127,6 +128,8 @@
 		2B6ECB551B982EFE00E3DD29 /* DetailsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailsModel.m; path = "Model/内容/DetailsModel.m"; sourceTree = "<group>"; };
 		2B6ECB561B982EFE00E3DD29 /* StoriesItm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StoriesItm.h; path = "Model/内容/StoriesItm.h"; sourceTree = "<group>"; };
 		2B6ECB571B982EFE00E3DD29 /* StoriesItm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StoriesItm.m; path = "Model/内容/StoriesItm.m"; sourceTree = "<group>"; };
+		2B976BE41BE8913E003E3605 /* StartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartViewController.h; sourceTree = "<group>"; };
+		2B976BE51BE8913E003E3605 /* StartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartViewController.m; sourceTree = "<group>"; };
 		2BA611791BD3E41F0038AD23 /* CommentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommentsCell.h; path = Views/CommentsCell.h; sourceTree = "<group>"; };
 		2BA6117A1BD3E41F0038AD23 /* CommentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommentsCell.m; path = Views/CommentsCell.m; sourceTree = "<group>"; };
 		2BB27B411BD61C3C00D31BA7 /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeftViewController.h; path = Controller/LeftViewController.h; sourceTree = "<group>"; };
@@ -229,6 +232,8 @@
 				2BBF22B41BD3782A00DD391C /* CommentsController.m */,
 				2B54E75E1BE202B5004BD512 /* EditCommentsController.h */,
 				2B54E75F1BE202B5004BD512 /* EditCommentsController.m */,
+				2B976BE41BE8913E003E3605 /* StartViewController.h */,
+				2B976BE51BE8913E003E3605 /* StartViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -571,6 +576,7 @@
 				2B6ECB591B982EFE00E3DD29 /* DetailsModel.m in Sources */,
 				2B54E7601BE202B5004BD512 /* EditCommentsController.m in Sources */,
 				2B4B84931B9AA8E20099FDDA /* UIButton+Badge.m in Sources */,
+				2B976BE61BE8913E003E3605 /* StartViewController.m in Sources */,
 				2B6ECB381B982EC300E3DD29 /* DetailsController.m in Sources */,
 				2B6ECB321B982EB600E3DD29 /* NetworkTool.m in Sources */,
 				2B6ECB471B982ED200E3DD29 /* StoriesCell.m in Sources */,
