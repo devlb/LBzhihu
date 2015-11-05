@@ -59,15 +59,16 @@
 
 - (void)addUI{
     self.mainView = [[UIView alloc] initWithFrame:self.view.bounds];
-    self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 44)];
+    
+    self.headView = [[HomeHeadView alloc] initWithFrame:CGRectMake(0, 0, MAINSIZE.width, 64)];
    
     [self.headView.titleBtn setTitle:@"首页" forState:(UIControlStateNormal)];
+    [self.headView.leftBtn setImage:[UIImage imageNamed:@"icon.bundle/Home_Icon_Highlight@2x.png"] forState:(UIControlStateNormal)];
     [self.headView.leftBtn addTarget:self action:@selector(showLeftView) forControlEvents:(UIControlEventTouchUpInside)];
     
     self.topView = [[TopView alloc] initWithFrame:CGRectMake(0,0, MAINSIZE.width, TOPVIEWH)];
     
     UIPageControl *pageControl = [[UIPageControl alloc]init];
-   /// pageControl.backgroundColor = [UIColor redColor];
     pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
     pageControl.pageIndicatorTintColor = [UIColor grayColor];
     
@@ -309,12 +310,13 @@
 
 
 //改变顶部的headview颜色
--( void )scrollViewDidScroll:( UIScrollView *)scrollView {
+-(void)scrollViewDidScroll:( UIScrollView *)scrollView {
     CGFloat offsetY = scrollView.contentOffset.y;
     if (offsetY >= 44 || offsetY <= -44) {
         return;
     }
     self.headView.alpha = offsetY / 44.0 ;
+    self.navigationController.navigationBar.alpha = offsetY / 44.0 ;
 }
 
 
@@ -343,7 +345,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
-    self.navigationController.navigationBarHidden = YES;
+   self.navigationController.navigationBarHidden = YES;
+    
 }
 
 - (void)didReceiveMemoryWarning {

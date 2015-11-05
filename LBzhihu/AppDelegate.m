@@ -42,7 +42,7 @@
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     StartViewController *startVC = [[StartViewController alloc] init];
     
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:startVC];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
     self.window.tintColor = [UIColor colorWithRed:139/255.0 green:139/255.0 blue:131/255.0 alpha:1];
     
     [self.window makeKeyAndVisible];
@@ -52,10 +52,11 @@
 }
 
 - (void)share{
-    [ShareSDK registerApp:SHAREAPPKEY activePlatforms:@[@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType){
+    [ShareSDK registerApp:SHAREAPPKEY activePlatforms:@[@(SSDKPlatformTypeWechat),@(SSDKPlatformTypeQQ)] onImport:^(SSDKPlatformType platformType){
         switch (platformType) {
             case SSDKPlatformTypeWechat:
                 [ShareSDKConnector connectWeChat:[WXApi class]];
+                break;
             case SSDKPlatformTypeQQ:
                 [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                 break;
@@ -72,8 +73,9 @@
                 break;
             case SSDKPlatformSubTypeQQFriend:
             case SSDKPlatformSubTypeQZone:
+            case SSDKPlatformTypeQQ:
+                [appInfo SSDKSetupQQByAppId:QQAPPID appKey:QQAPPKEY authType:SSDKAuthTypeBoth];
                 
-                [appInfo SSDKSetupQQByAppId:QQAPPID appKey:QQAPPKEY authType:SSDKAuthTypeSSO];
                 break;
             default:
                 break;

@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -46,16 +46,20 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
+	<string>1.2</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>
 		<string>weixin</string>
+		<string>mqqopensdkapiV3</string>
 		<string>qq.com</string>
 		<string>mqqopensdkapiV2</string>
 		<string>mqqOpensdkSSoLogin</string>
+		<string>wtloginmqq2</string>
+		<string>mqqapi</string>
+		<string>mqqwpa</string>
 		<string>mqq</string>
 		<string>mqzoneopensdkapiV2</string>
 		<string>mqzoneopensdkapi19</string>

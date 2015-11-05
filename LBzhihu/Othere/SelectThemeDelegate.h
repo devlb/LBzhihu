@@ -10,8 +10,6 @@
 
 @protocol SelectThemeDelegate <NSObject>
 
-
-
 - (void)selectThemeIdWithThemeId:(NSString *)themeId headViewTitle:(NSString *)headViewTitle;
 
 @end

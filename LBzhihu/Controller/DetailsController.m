@@ -160,15 +160,15 @@
     }
     
     [htmlString appendFormat:@"%@",model.body];
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\n" withString:@"!@!n"] mutableCopy];
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\r" withString:@"!@!r"] mutableCopy];
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\p" withString:@"!@!p"] mutableCopy];
-    
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\\"  withString:@""] mutableCopy];
-    
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!n" withString:@"\n"] mutableCopy];
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!r" withString:@"\r"] mutableCopy];
-    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!p" withString:@"\p"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\n" withString:@"!@!n"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\r" withString:@"!@!r"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\p" withString:@"!@!p"] mutableCopy];
+//    
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"\\"  withString:@""] mutableCopy];
+//    
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!n" withString:@"\n"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!r" withString:@"\r"] mutableCopy];
+//    htmlString = [[htmlString stringByReplacingOccurrencesOfString:@"!@!p" withString:@"\p"] mutableCopy];
     
     
     [htmlString appendFormat:@"</body></html>"];
@@ -264,18 +264,15 @@
     [shareParams SSDKSetupShareParamsByText:text images:imgArr url:url title:title type:(SSDKContentTypeWebPage)];
     __weak id weekSelf = self;
     
-    if ([ShareSDK hasAuthorized:(SSDKPlatformTypeWechat)]) {
-        NSLog(@"微信已授权");
-    } ;
-    
-    [ShareSDK showShareActionSheet:self.view
-                             items:@[@(SSDKPlatformTypeWechat)]
+        [ShareSDK showShareActionSheet:self.view
+                             items:@[@(SSDKPlatformTypeWechat),@(SSDKPlatformTypeQQ)]
                        shareParams:shareParams
                onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
                    
                    switch (state) {
                        case SSDKResponseStateBegin:{
                            [weekSelf showLoadingView:YES];
+                        
                            break;
                        }
                        case SSDKResponseStateSuccess:{

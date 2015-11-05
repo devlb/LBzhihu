@@ -65,6 +65,7 @@
     self.pageControl.currentPage = offsetX / self.view.frame.size.width;
 }
 
+//最后一张图跳转到主视图
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     if(scrollView.contentOffset.x >= self.view.frame.size.width * (imgs.count - 1)){
         HomeViewController *homeVC = [HomeViewController new];
@@ -76,7 +77,7 @@
    
 }
 
-//最后一张图跳转到主视图
+
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
     self.navigationController.navigationBarHidden = YES;
