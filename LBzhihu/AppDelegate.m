@@ -42,7 +42,13 @@
     HomeViewController *homeVC = [[HomeViewController alloc] init];
     StartViewController *startVC = [[StartViewController alloc] init];
     
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    BOOL isFirstStart = [[NSUserDefaults standardUserDefaults] boolForKey:@"firstStart"];
+    if (isFirstStart) {
+        self.window.rootViewController = startVC;
+    }else{
+         self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:homeVC];
+    }
+   
     self.window.tintColor = [UIColor colorWithRed:139/255.0 green:139/255.0 blue:131/255.0 alpha:1];
     
     [self.window makeKeyAndVisible];

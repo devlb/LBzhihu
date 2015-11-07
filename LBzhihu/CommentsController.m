@@ -81,12 +81,15 @@
     data = [NSMutableArray arrayWithObjects:[NSMutableArray array],[NSMutableArray array],nil];
     
     __weak typeof(self) weakSelf = self;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"正在加载评论";
     
     [[NetworkTool sharedNetworkTool] getLongComments:self.storiesId success:^(CommentsModel *commentsModel) {
         [data replaceObjectAtIndex:0 withObject:commentsModel.comments];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
+            [hud hide:YES];
         });
         
     } failure:^{
@@ -98,6 +101,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf.tableView reloadData];
+             [hud hide:YES];
         });
         
     } failure:^{
